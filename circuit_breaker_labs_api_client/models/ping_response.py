@@ -13,49 +13,39 @@ from typing import cast
 import datetime
 
 
-
-
-
-
 T = TypeVar("T", bound="PingResponse")
-
 
 
 @_attrs_define
 class PingResponse:
-    """ 
-        Example:
-            {'message': 'pong', 'timestamp': '2024-01-15T10:30:00'}
+    """
+    Example:
+        {'message': 'pong', 'timestamp': '2024-01-15T10:30:00'}
 
-        Attributes:
-            message (str): Response message
-            timestamp (datetime.datetime): Server timestamp
-     """
+    Attributes:
+        message (str): Response message
+        timestamp (datetime.datetime): Server timestamp
+    """
 
     message: str
     timestamp: datetime.datetime
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         message = self.message
 
         timestamp = self.timestamp.isoformat()
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "message": message,
-            "timestamp": timestamp,
-        })
+        field_dict.update(
+            {
+                "message": message,
+                "timestamp": timestamp,
+            }
+        )
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -64,14 +54,10 @@ class PingResponse:
 
         timestamp = isoparse(d.pop("timestamp"))
 
-
-
-
         ping_response = cls(
             message=message,
             timestamp=timestamp,
         )
-
 
         ping_response.additional_properties = d
         return ping_response

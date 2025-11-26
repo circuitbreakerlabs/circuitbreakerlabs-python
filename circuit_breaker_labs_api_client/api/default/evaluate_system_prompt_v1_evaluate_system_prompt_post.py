@@ -13,21 +13,13 @@ from ...models.run_tests_response import RunTestsResponse
 from typing import cast
 
 
-
 def _get_kwargs(
     *,
     body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
-
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     headers["cbl-api-key"] = cbl_api_key
-
-
-
-    
-
-    
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -36,26 +28,22 @@ def _get_kwargs(
 
     _kwargs["json"] = body.to_dict()
 
-
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> HTTPValidationError | RunTestsResponse | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> HTTPValidationError | RunTestsResponse | None:
     if response.status_code == 200:
         response_200 = RunTestsResponse.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
-
-
 
         return response_422
 
@@ -65,7 +53,9 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[HTTPValidationError | RunTestsResponse]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[HTTPValidationError | RunTestsResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -79,9 +69,8 @@ def sync_detailed(
     client: AuthenticatedClient | Client,
     body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
-
 ) -> Response[HTTPValidationError | RunTestsResponse]:
-    """ Evaluate System Prompt
+    """Evaluate System Prompt
 
      Run agentic safety tests aginst a system prompt.
 
@@ -95,13 +84,11 @@ def sync_detailed(
 
     Returns:
         Response[HTTPValidationError | RunTestsResponse]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         body=body,
-cbl_api_key=cbl_api_key,
-
+        cbl_api_key=cbl_api_key,
     )
 
     response = client.get_httpx_client().request(
@@ -110,14 +97,14 @@ cbl_api_key=cbl_api_key,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient | Client,
     body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
-
 ) -> HTTPValidationError | RunTestsResponse | None:
-    """ Evaluate System Prompt
+    """Evaluate System Prompt
 
      Run agentic safety tests aginst a system prompt.
 
@@ -131,24 +118,22 @@ def sync(
 
     Returns:
         HTTPValidationError | RunTestsResponse
-     """
-
+    """
 
     return sync_detailed(
         client=client,
-body=body,
-cbl_api_key=cbl_api_key,
-
+        body=body,
+        cbl_api_key=cbl_api_key,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
     body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
-
 ) -> Response[HTTPValidationError | RunTestsResponse]:
-    """ Evaluate System Prompt
+    """Evaluate System Prompt
 
      Run agentic safety tests aginst a system prompt.
 
@@ -162,29 +147,25 @@ async def asyncio_detailed(
 
     Returns:
         Response[HTTPValidationError | RunTestsResponse]
-     """
-
+    """
 
     kwargs = _get_kwargs(
         body=body,
-cbl_api_key=cbl_api_key,
-
+        cbl_api_key=cbl_api_key,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient | Client,
     body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
-
 ) -> HTTPValidationError | RunTestsResponse | None:
-    """ Evaluate System Prompt
+    """Evaluate System Prompt
 
      Run agentic safety tests aginst a system prompt.
 
@@ -198,12 +179,12 @@ async def asyncio(
 
     Returns:
         HTTPValidationError | RunTestsResponse
-     """
+    """
 
-
-    return (await asyncio_detailed(
-        client=client,
-body=body,
-cbl_api_key=cbl_api_key,
-
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+            cbl_api_key=cbl_api_key,
+        )
+    ).parsed

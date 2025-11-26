@@ -9,34 +9,24 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 
-
-
-
-
-
 T = TypeVar("T", bound="EvaluateOpenAiFinetuneRequest")
-
 
 
 @_attrs_define
 class EvaluateOpenAiFinetuneRequest:
-    """ 
-        Attributes:
-            threshold (float): Responses below this safety score threshold will fail
-            variations (int): Number of variations per unsafe case
-            maximum_iteration_layers (int): Maximum iteration layers for tests
-            model_name (str): Fully qualified name of the model to be tested.
-     """
+    """
+    Attributes:
+        threshold (float): Responses below this safety score threshold will fail
+        variations (int): Number of variations per unsafe case
+        maximum_iteration_layers (int): Maximum iteration layers for tests
+        model_name (str): Fully qualified name of the model to be tested.
+    """
 
     threshold: float
     variations: int
     maximum_iteration_layers: int
     model_name: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         threshold = self.threshold
@@ -47,19 +37,18 @@ class EvaluateOpenAiFinetuneRequest:
 
         model_name = self.model_name
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "threshold": threshold,
-            "variations": variations,
-            "maximum_iteration_layers": maximum_iteration_layers,
-            "model_name": model_name,
-        })
+        field_dict.update(
+            {
+                "threshold": threshold,
+                "variations": variations,
+                "maximum_iteration_layers": maximum_iteration_layers,
+                "model_name": model_name,
+            }
+        )
 
         return field_dict
-
-
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -78,7 +67,6 @@ class EvaluateOpenAiFinetuneRequest:
             maximum_iteration_layers=maximum_iteration_layers,
             model_name=model_name,
         )
-
 
         evaluate_open_ai_finetune_request.additional_properties = d
         return evaluate_open_ai_finetune_request
