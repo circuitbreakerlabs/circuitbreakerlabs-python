@@ -1,1 +1,1 @@
-# circuitbreakerlabs-python
+# Circuit Breaker Labs Python SDK
