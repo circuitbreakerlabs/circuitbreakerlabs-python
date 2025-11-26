@@ -1,6 +1,6 @@
-# circuit-breaker-labs-api-client
+# Circuit Breaker Labs Python Client
 
-A client library for accessing Circuit Breaker Labs API
+A client library for accessing the Circuit Breaker Labs API
 
 ## Usage
 
