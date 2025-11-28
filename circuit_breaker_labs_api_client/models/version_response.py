@@ -9,31 +9,42 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 
+
+
+
+
+
 T = TypeVar("T", bound="VersionResponse")
+
 
 
 @_attrs_define
 class VersionResponse:
-    """
-    Attributes:
-        version (str): API version
-    """
+    """ 
+        Attributes:
+            version (str): API version
+     """
 
     version: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
+
+
+
+
     def to_dict(self) -> dict[str, Any]:
         version = self.version
 
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "version": version,
-            }
-        )
+        field_dict.update({
+            "version": version,
+        })
 
         return field_dict
+
+
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -43,6 +54,7 @@ class VersionResponse:
         version_response = cls(
             version=version,
         )
+
 
         version_response.additional_properties = d
         return version_response

@@ -9,31 +9,42 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 
+
+
+
+
+
 T = TypeVar("T", bound="ValidateApiKeyResponse")
+
 
 
 @_attrs_define
 class ValidateApiKeyResponse:
-    """
-    Attributes:
-        valid (bool): Indicates if the API key is valid
-    """
+    """ 
+        Attributes:
+            valid (bool): Indicates if the API key is valid
+     """
 
     valid: bool
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
+
+
+
+
     def to_dict(self) -> dict[str, Any]:
         valid = self.valid
 
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "valid": valid,
-            }
-        )
+        field_dict.update({
+            "valid": valid,
+        })
 
         return field_dict
+
+
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
@@ -43,6 +54,7 @@ class ValidateApiKeyResponse:
         validate_api_key_response = cls(
             valid=valid,
         )
+
 
         validate_api_key_response.additional_properties = d
         return validate_api_key_response

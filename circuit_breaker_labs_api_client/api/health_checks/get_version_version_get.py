@@ -7,22 +7,35 @@ from ...client import AuthenticatedClient, Client
 from ...types import Response, UNSET
 from ... import errors
 
-from ...models.ping_response import PingResponse
+from ...models.version_response import VersionResponse
 from typing import cast
 
 
-def _get_kwargs() -> dict[str, Any]:
+
+def _get_kwargs(
+    
+) -> dict[str, Any]:
+    
+
+    
+
+    
+
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/v1/ping",
+        "url": "/version",
     }
+
 
     return _kwargs
 
 
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> PingResponse | None:
+
+def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> VersionResponse | None:
     if response.status_code == 200:
-        response_200 = PingResponse.from_dict(response.json())
+        response_200 = VersionResponse.from_dict(response.json())
+
+
 
         return response_200
 
@@ -32,7 +45,7 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
         return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[PingResponse]:
+def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[VersionResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -44,20 +57,24 @@ def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Res
 def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
-) -> Response[PingResponse]:
-    """Ping
 
-     Health check endpoint to verify the API is responsive.
+) -> Response[VersionResponse]:
+    """ Get Version
+
+     Get the current API version.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[PingResponse]
-    """
+        Response[VersionResponse]
+     """
 
-    kwargs = _get_kwargs()
+
+    kwargs = _get_kwargs(
+        
+    )
 
     response = client.get_httpx_client().request(
         **kwargs,
@@ -65,69 +82,76 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
-
 def sync(
     *,
     client: AuthenticatedClient | Client,
-) -> PingResponse | None:
-    """Ping
 
-     Health check endpoint to verify the API is responsive.
+) -> VersionResponse | None:
+    """ Get Version
+
+     Get the current API version.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        PingResponse
-    """
+        VersionResponse
+     """
+
 
     return sync_detailed(
         client=client,
-    ).parsed
 
+    ).parsed
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
-) -> Response[PingResponse]:
-    """Ping
 
-     Health check endpoint to verify the API is responsive.
+) -> Response[VersionResponse]:
+    """ Get Version
+
+     Get the current API version.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[PingResponse]
-    """
+        Response[VersionResponse]
+     """
 
-    kwargs = _get_kwargs()
 
-    response = await client.get_async_httpx_client().request(**kwargs)
+    kwargs = _get_kwargs(
+        
+    )
+
+    response = await client.get_async_httpx_client().request(
+        **kwargs
+    )
 
     return _build_response(client=client, response=response)
-
 
 async def asyncio(
     *,
     client: AuthenticatedClient | Client,
-) -> PingResponse | None:
-    """Ping
 
-     Health check endpoint to verify the API is responsive.
+) -> VersionResponse | None:
+    """ Get Version
+
+     Get the current API version.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        PingResponse
-    """
+        VersionResponse
+     """
 
-    return (
-        await asyncio_detailed(
-            client=client,
-        )
-    ).parsed
+
+    return (await asyncio_detailed(
+        client=client,
+
+    )).parsed

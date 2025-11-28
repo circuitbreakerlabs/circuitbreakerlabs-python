@@ -9,8 +9,11 @@ from ... import errors
 
 from ...models.evaluate_open_ai_finetune_request import EvaluateOpenAiFinetuneRequest
 from ...models.http_validation_error import HTTPValidationError
+from ...models.quota_exceeded_error import QuotaExceededError
 from ...models.run_tests_response import RunTestsResponse
+from ...models.unauthorized_error import UnauthorizedError
 from typing import cast
+
 
 
 def _get_kwargs(
@@ -18,18 +21,26 @@ def _get_kwargs(
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
+
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     headers["cbl-api-key"] = cbl_api_key
 
     headers["openai-api-key"] = openai_api_key
 
+
+
+    
+
+    
+
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/v1/evaluate_openai_finetune",
+        "url": "/evaluate_openai_finetune",
     }
 
     _kwargs["json"] = body.to_dict()
+
 
     headers["Content-Type"] = "application/json"
 
@@ -37,16 +48,33 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> HTTPValidationError | RunTestsResponse | None:
+
+def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
     if response.status_code == 200:
         response_200 = RunTestsResponse.from_dict(response.json())
 
+
+
         return response_200
+
+    if response.status_code == 401:
+        response_401 = UnauthorizedError.from_dict(response.json())
+
+
+
+        return response_401
+
+    if response.status_code == 403:
+        response_403 = QuotaExceededError.from_dict(response.json())
+
+
+
+        return response_403
 
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
+
+
 
         return response_422
 
@@ -56,9 +84,7 @@ def _parse_response(
         return None
 
 
-def _build_response(
-    *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[HTTPValidationError | RunTestsResponse]:
+def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -73,8 +99,9 @@ def sync_detailed(
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-) -> Response[HTTPValidationError | RunTestsResponse]:
-    """Evaluate OpenAI Fine Tune
+
+) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
+    """ Evaluate OpenAI Fine Tune
 
      Run agentic safety tests against an OpenAI fine-tuned model.
 
@@ -95,13 +122,15 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | RunTestsResponse]
-    """
+        Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]
+     """
+
 
     kwargs = _get_kwargs(
         body=body,
-        cbl_api_key=cbl_api_key,
-        openai_api_key=openai_api_key,
+cbl_api_key=cbl_api_key,
+openai_api_key=openai_api_key,
+
     )
 
     response = client.get_httpx_client().request(
@@ -110,15 +139,15 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
-
 def sync(
     *,
     client: AuthenticatedClient | Client,
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-) -> HTTPValidationError | RunTestsResponse | None:
-    """Evaluate OpenAI Fine Tune
+
+) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
+    """ Evaluate OpenAI Fine Tune
 
      Run agentic safety tests against an OpenAI fine-tuned model.
 
@@ -139,16 +168,17 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | RunTestsResponse
-    """
+        HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError
+     """
+
 
     return sync_detailed(
         client=client,
-        body=body,
-        cbl_api_key=cbl_api_key,
-        openai_api_key=openai_api_key,
-    ).parsed
+body=body,
+cbl_api_key=cbl_api_key,
+openai_api_key=openai_api_key,
 
+    ).parsed
 
 async def asyncio_detailed(
     *,
@@ -156,8 +186,9 @@ async def asyncio_detailed(
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-) -> Response[HTTPValidationError | RunTestsResponse]:
-    """Evaluate OpenAI Fine Tune
+
+) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
+    """ Evaluate OpenAI Fine Tune
 
      Run agentic safety tests against an OpenAI fine-tuned model.
 
@@ -178,19 +209,22 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | RunTestsResponse]
-    """
+        Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]
+     """
+
 
     kwargs = _get_kwargs(
         body=body,
-        cbl_api_key=cbl_api_key,
-        openai_api_key=openai_api_key,
+cbl_api_key=cbl_api_key,
+openai_api_key=openai_api_key,
+
     )
 
-    response = await client.get_async_httpx_client().request(**kwargs)
+    response = await client.get_async_httpx_client().request(
+        **kwargs
+    )
 
     return _build_response(client=client, response=response)
-
 
 async def asyncio(
     *,
@@ -198,8 +232,9 @@ async def asyncio(
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-) -> HTTPValidationError | RunTestsResponse | None:
-    """Evaluate OpenAI Fine Tune
+
+) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
+    """ Evaluate OpenAI Fine Tune
 
      Run agentic safety tests against an OpenAI fine-tuned model.
 
@@ -220,14 +255,14 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | RunTestsResponse
-    """
+        HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError
+     """
 
-    return (
-        await asyncio_detailed(
-            client=client,
-            body=body,
-            cbl_api_key=cbl_api_key,
-            openai_api_key=openai_api_key,
-        )
-    ).parsed
+
+    return (await asyncio_detailed(
+        client=client,
+body=body,
+cbl_api_key=cbl_api_key,
+openai_api_key=openai_api_key,
+
+    )).parsed
