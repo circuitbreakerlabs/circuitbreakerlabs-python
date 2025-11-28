@@ -1,18 +1,11 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
-
-
-
-
-
-
+from typing_extensions import Self
 
 T = TypeVar("T", bound="MonthlyQuotaResponse")
 
@@ -21,10 +14,11 @@ T = TypeVar("T", bound="MonthlyQuotaResponse")
 @_attrs_define
 class MonthlyQuotaResponse:
     """ 
-        Attributes:
-            generated_tests (int): Number of test cases generated this month.
-            alloted_test_generations (int): Total number of test cases allotted for this month.
-     """
+    Attributes:
+        generated_tests (int): Number of test cases generated this month.
+        alloted_test_generations (int): Total number of test cases allotted for this month.
+
+    """
 
     generated_tests: int
     alloted_test_generations: int
@@ -52,7 +46,7 @@ class MonthlyQuotaResponse:
 
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         generated_tests = d.pop("generated_tests")
 

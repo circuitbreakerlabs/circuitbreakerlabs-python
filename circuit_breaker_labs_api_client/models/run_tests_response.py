@@ -1,14 +1,11 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
-
-from typing import cast
+from typing_extensions import Self
 
 if TYPE_CHECKING:
   from ..models.failed_test_result import FailedTestResult
@@ -24,11 +21,12 @@ T = TypeVar("T", bound="RunTestsResponse")
 @_attrs_define
 class RunTestsResponse:
     """ 
-        Attributes:
-            total_passed (int): Total number of test cases that passed across all iteration layers
-            total_failed (int): Total number of test cases that failed across all iteration layers
-            failed_results (list[list[FailedTestResult]]): Failed test cases executed per iteration layer
-     """
+    Attributes:
+        total_passed (int): Total number of test cases that passed across all iteration layers
+        total_failed (int): Total number of test cases that failed across all iteration layers
+        failed_results (list[list[FailedTestResult]]): Failed test cases executed per iteration layer
+
+    """
 
     total_passed: int
     total_failed: int
@@ -40,7 +38,6 @@ class RunTestsResponse:
 
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.failed_test_result import FailedTestResult
         total_passed = self.total_passed
 
         total_failed = self.total_failed
@@ -71,7 +68,7 @@ class RunTestsResponse:
 
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.failed_test_result import FailedTestResult
         d = dict(src_dict)
         total_passed = d.pop("total_passed")

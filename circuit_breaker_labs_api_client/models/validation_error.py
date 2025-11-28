@@ -1,19 +1,11 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
-
-from typing import cast
-
-
-
-
-
+from typing_extensions import Self
 
 T = TypeVar("T", bound="ValidationError")
 
@@ -22,11 +14,12 @@ T = TypeVar("T", bound="ValidationError")
 @_attrs_define
 class ValidationError:
     """ 
-        Attributes:
-            loc (list[int | str]):
-            msg (str):
-            type_ (str):
-     """
+    Attributes:
+        loc (list[int | str]):
+        msg (str):
+        type_ (str):
+
+    """
 
     loc: list[int | str]
     msg: str
@@ -64,13 +57,13 @@ class ValidationError:
 
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         loc = []
         _loc = d.pop("loc")
         for loc_item_data in (_loc):
             def _parse_loc_item(data: object) -> int | str:
-                return cast(int | str, data)
+                return cast("int | str", data)
 
             loc_item = _parse_loc_item(loc_item_data)
 

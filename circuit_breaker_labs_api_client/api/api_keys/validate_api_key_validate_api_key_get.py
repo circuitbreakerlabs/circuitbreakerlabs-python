@@ -1,16 +1,13 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.validate_api_key_response import ValidateApiKeyResponse
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
@@ -23,9 +20,9 @@ def _get_kwargs(
 
 
 
-    
 
-    
+
+
 
     _kwargs: dict[str, Any] = {
         "method": "get",
@@ -55,8 +52,7 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+    return None
 
 
 def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[HTTPValidationError | ValidateApiKeyResponse]:
@@ -74,7 +70,7 @@ def sync_detailed(
     cbl_api_key: str,
 
 ) -> Response[HTTPValidationError | ValidateApiKeyResponse]:
-    """ Validate Api Key
+    """Validate Api Key
 
      Validate the provided API key.
 
@@ -87,9 +83,8 @@ def sync_detailed(
 
     Returns:
         Response[HTTPValidationError | ValidateApiKeyResponse]
-     """
 
-
+    """
     kwargs = _get_kwargs(
         cbl_api_key=cbl_api_key,
 
@@ -107,7 +102,7 @@ def sync(
     cbl_api_key: str,
 
 ) -> HTTPValidationError | ValidateApiKeyResponse | None:
-    """ Validate Api Key
+    """Validate Api Key
 
      Validate the provided API key.
 
@@ -120,9 +115,8 @@ def sync(
 
     Returns:
         HTTPValidationError | ValidateApiKeyResponse
-     """
 
-
+    """
     return sync_detailed(
         client=client,
 cbl_api_key=cbl_api_key,
@@ -135,7 +129,7 @@ async def asyncio_detailed(
     cbl_api_key: str,
 
 ) -> Response[HTTPValidationError | ValidateApiKeyResponse]:
-    """ Validate Api Key
+    """Validate Api Key
 
      Validate the provided API key.
 
@@ -148,16 +142,15 @@ async def asyncio_detailed(
 
     Returns:
         Response[HTTPValidationError | ValidateApiKeyResponse]
-     """
 
-
+    """
     kwargs = _get_kwargs(
         cbl_api_key=cbl_api_key,
 
     )
 
     response = await client.get_async_httpx_client().request(
-        **kwargs
+        **kwargs,
     )
 
     return _build_response(client=client, response=response)
@@ -168,7 +161,7 @@ async def asyncio(
     cbl_api_key: str,
 
 ) -> HTTPValidationError | ValidateApiKeyResponse | None:
-    """ Validate Api Key
+    """Validate Api Key
 
      Validate the provided API key.
 
@@ -181,9 +174,8 @@ async def asyncio(
 
     Returns:
         HTTPValidationError | ValidateApiKeyResponse
-     """
 
-
+    """
     return (await asyncio_detailed(
         client=client,
 cbl_api_key=cbl_api_key,

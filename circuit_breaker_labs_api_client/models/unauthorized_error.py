@@ -1,19 +1,13 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from typing_extensions import Self
 
 from ..types import UNSET, Unset
-
-from ..types import UNSET, Unset
-
-
-
-
-
 
 T = TypeVar("T", bound="UnauthorizedError")
 
@@ -21,15 +15,16 @@ T = TypeVar("T", bound="UnauthorizedError")
 
 @_attrs_define
 class UnauthorizedError:
-    """ 401 Unauthorized error response.
+    """401 Unauthorized error response.
 
-        Attributes:
-            message (str):
-            error (str | Unset):  Default: 'unauthorized'.
-     """
+    Attributes:
+        message (str):
+        error (str | Unset):  Default: 'unauthorized'.
+
+    """
 
     message: str
-    error: str | Unset = 'unauthorized'
+    error: str | Unset = "unauthorized"
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
 
@@ -55,7 +50,7 @@ class UnauthorizedError:
 
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         message = d.pop("message")
 

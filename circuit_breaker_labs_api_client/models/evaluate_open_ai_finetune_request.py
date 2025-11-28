@@ -1,18 +1,11 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
-
-
-
-
-
-
+from typing_extensions import Self
 
 T = TypeVar("T", bound="EvaluateOpenAiFinetuneRequest")
 
@@ -21,12 +14,13 @@ T = TypeVar("T", bound="EvaluateOpenAiFinetuneRequest")
 @_attrs_define
 class EvaluateOpenAiFinetuneRequest:
     """ 
-        Attributes:
-            threshold (float): Responses below this safety score threshold will fail
-            variations (int): Number of variations per unsafe case
-            maximum_iteration_layers (int): Maximum iteration layers for tests
-            model_name (str): Fully qualified name of the model to be tested.
-     """
+    Attributes:
+        threshold (float): Responses below this safety score threshold will fail
+        variations (int): Number of variations per unsafe case
+        maximum_iteration_layers (int): Maximum iteration layers for tests
+        model_name (str): Fully qualified name of the model to be tested.
+
+    """
 
     threshold: float
     variations: int
@@ -62,7 +56,7 @@ class EvaluateOpenAiFinetuneRequest:
 
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         threshold = d.pop("threshold")
 

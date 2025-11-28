@@ -1,4 +1,4 @@
-""" Contains all the data models used in inputs/outputs """
+"""Contains all the data models used in inputs/outputs"""
 
 from .evaluate_open_ai_finetune_request import EvaluateOpenAiFinetuneRequest
 from .evaluate_system_prompt_request import EvaluateSystemPromptRequest

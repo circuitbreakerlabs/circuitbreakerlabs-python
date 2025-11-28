@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from typing_extensions import Self
 
 from ..types import UNSET, Unset
-
-from ..types import UNSET, Unset
-from typing import cast
 
 if TYPE_CHECKING:
   from ..models.validation_error import ValidationError
@@ -25,9 +23,10 @@ T = TypeVar("T", bound="HTTPValidationError")
 @_attrs_define
 class HTTPValidationError:
     """ 
-        Attributes:
-            detail (list[ValidationError] | Unset):
-     """
+    Attributes:
+        detail (list[ValidationError] | Unset):
+
+    """
 
     detail: list[ValidationError] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -37,7 +36,6 @@ class HTTPValidationError:
 
 
     def to_dict(self) -> dict[str, Any]:
-        from ..models.validation_error import ValidationError
         detail: list[dict[str, Any]] | Unset = UNSET
         if not isinstance(self.detail, Unset):
             detail = []
@@ -60,7 +58,7 @@ class HTTPValidationError:
 
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         from ..models.validation_error import ValidationError
         d = dict(src_dict)
         _detail = d.pop("detail", UNSET)

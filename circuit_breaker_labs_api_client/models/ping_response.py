@@ -1,21 +1,13 @@
 from __future__ import annotations
 
+import datetime
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
-
 from dateutil.parser import isoparse
-from typing import cast
-import datetime
-
-
-
-
-
+from typing_extensions import Self
 
 T = TypeVar("T", bound="PingResponse")
 
@@ -24,13 +16,14 @@ T = TypeVar("T", bound="PingResponse")
 @_attrs_define
 class PingResponse:
     """ 
-        Example:
-            {'message': 'pong', 'timestamp': '2024-01-15T10:30:00'}
+    Example:
+        {'message': 'pong', 'timestamp': '2024-01-15T10:30:00'}
 
-        Attributes:
-            message (str): Response message
-            timestamp (datetime.datetime): Server timestamp
-     """
+    Attributes:
+        message (str): Response message
+        timestamp (datetime.datetime): Server timestamp
+
+    """
 
     message: str
     timestamp: datetime.datetime
@@ -58,7 +51,7 @@ class PingResponse:
 
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         message = d.pop("message")
 

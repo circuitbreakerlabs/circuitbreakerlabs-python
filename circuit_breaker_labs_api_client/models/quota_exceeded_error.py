@@ -1,19 +1,13 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar, BinaryIO, TextIO, TYPE_CHECKING, Generator
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from typing_extensions import Self
 
 from ..types import UNSET, Unset
-
-from ..types import UNSET, Unset
-
-
-
-
-
 
 T = TypeVar("T", bound="QuotaExceededError")
 
@@ -21,15 +15,16 @@ T = TypeVar("T", bound="QuotaExceededError")
 
 @_attrs_define
 class QuotaExceededError:
-    """ 403 Forbidden error response for quota limits.
+    """403 Forbidden error response for quota limits.
 
-        Attributes:
-            message (str):
-            error (str | Unset):  Default: 'quota_exceeded'.
-     """
+    Attributes:
+        message (str):
+        error (str | Unset):  Default: 'quota_exceeded'.
+
+    """
 
     message: str
-    error: str | Unset = 'quota_exceeded'
+    error: str | Unset = "quota_exceeded"
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
 
@@ -55,7 +50,7 @@ class QuotaExceededError:
 
 
     @classmethod
-    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
         d = dict(src_dict)
         message = d.pop("message")
 

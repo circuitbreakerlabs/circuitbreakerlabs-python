@@ -1,19 +1,16 @@
 from http import HTTPStatus
-from typing import Any, cast
+from typing import Any
 
 import httpx
 
-from ...client import AuthenticatedClient, Client
-from ...types import Response, UNSET
 from ... import errors
-
+from ...client import AuthenticatedClient, Client
 from ...models.evaluate_system_prompt_request import EvaluateSystemPromptRequest
 from ...models.http_validation_error import HTTPValidationError
 from ...models.quota_exceeded_error import QuotaExceededError
 from ...models.run_tests_response import RunTestsResponse
 from ...models.unauthorized_error import UnauthorizedError
-from typing import cast
-
+from ...types import Response
 
 
 def _get_kwargs(
@@ -27,9 +24,9 @@ def _get_kwargs(
 
 
 
-    
 
-    
+
+
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -77,8 +74,7 @@ def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Res
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
-    else:
-        return None
+    return None
 
 
 def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
@@ -97,7 +93,7 @@ def sync_detailed(
     cbl_api_key: str,
 
 ) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
-    """ Evaluate System Prompt
+    """Evaluate System Prompt
 
      Run agentic safety tests aginst a system prompt.
 
@@ -111,9 +107,8 @@ def sync_detailed(
 
     Returns:
         Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]
-     """
 
-
+    """
     kwargs = _get_kwargs(
         body=body,
 cbl_api_key=cbl_api_key,
@@ -133,7 +128,7 @@ def sync(
     cbl_api_key: str,
 
 ) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
-    """ Evaluate System Prompt
+    """Evaluate System Prompt
 
      Run agentic safety tests aginst a system prompt.
 
@@ -147,9 +142,8 @@ def sync(
 
     Returns:
         HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError
-     """
 
-
+    """
     return sync_detailed(
         client=client,
 body=body,
@@ -164,7 +158,7 @@ async def asyncio_detailed(
     cbl_api_key: str,
 
 ) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
-    """ Evaluate System Prompt
+    """Evaluate System Prompt
 
      Run agentic safety tests aginst a system prompt.
 
@@ -178,9 +172,8 @@ async def asyncio_detailed(
 
     Returns:
         Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]
-     """
 
-
+    """
     kwargs = _get_kwargs(
         body=body,
 cbl_api_key=cbl_api_key,
@@ -188,7 +181,7 @@ cbl_api_key=cbl_api_key,
     )
 
     response = await client.get_async_httpx_client().request(
-        **kwargs
+        **kwargs,
     )
 
     return _build_response(client=client, response=response)
@@ -200,7 +193,7 @@ async def asyncio(
     cbl_api_key: str,
 
 ) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
-    """ Evaluate System Prompt
+    """Evaluate System Prompt
 
      Run agentic safety tests aginst a system prompt.
 
@@ -214,9 +207,8 @@ async def asyncio(
 
     Returns:
         HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError
-     """
 
-
+    """
     return (await asyncio_detailed(
         client=client,
 body=body,
