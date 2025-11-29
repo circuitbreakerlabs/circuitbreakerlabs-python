@@ -1,1 +1,3 @@
 project_name_override: circuit-breaker-labs
+post_hooks:
+  - "uv lock"
