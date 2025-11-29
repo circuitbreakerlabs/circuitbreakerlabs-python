@@ -1,0 +1,6 @@
+project_name_override: circuit-breaker-labs
+post_hooks:
+  - "uv lock"
+  - "ruff format ."
+  - "ruff check . --fix-only"
+  - "prettier --write README.md"
