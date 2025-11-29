@@ -1,5 +1,4 @@
-# circuit-breaker-labs
-A client library for accessing Circuit Breaker Labs API
+# Circuit Breaker Labs Python Client
 
 ## Usage
 First, create a client:
@@ -7,15 +6,7 @@ First, create a client:
 ```python
 from circuit_breaker_labs import Client
 
-client = Client(base_url="https://api.example.com")
-```
-
-If the endpoints you're going to hit require authentication, use `AuthenticatedClient` instead:
-
-```python
-from circuit_breaker_labs import AuthenticatedClient
-
-client = AuthenticatedClient(base_url="https://api.example.com", token="SuperSecretToken")
+client = Client(base_url="https://api.circuitbreakerlabs.ai/v1/")
 ```
 
 Now call your endpoint and use your models:
@@ -41,26 +32,6 @@ from circuit_breaker_labs.types import Response
 async with client as client:
     my_data: MyDataModel = await get_my_data_model.asyncio(client=client)
     response: Response[MyDataModel] = await get_my_data_model.asyncio_detailed(client=client)
-```
-
-By default, when you're calling an HTTPS API it will attempt to verify that SSL is working correctly. Using certificate verification is highly recommended most of the time, but sometimes you may need to authenticate to a server (especially an internal server) using a custom certificate bundle.
-
-```python
-client = AuthenticatedClient(
-    base_url="https://internal_api.example.com", 
-    token="SuperSecretToken",
-    verify_ssl="/path/to/certificate_bundle.pem",
-)
-```
-
-You can also disable certificate validation altogether, but beware that **this is a security risk**.
-
-```python
-client = AuthenticatedClient(
-    base_url="https://internal_api.example.com", 
-    token="SuperSecretToken", 
-    verify_ssl=False
-)
 ```
 
 Things to know:
@@ -89,7 +60,7 @@ def log_response(response):
     print(f"Response event hook: {request.method} {request.url} - Status {response.status_code}")
 
 client = Client(
-    base_url="https://api.example.com",
+    base_url="https://api.circuitbreakerlabs.ai/v1/",
     httpx_args={"event_hooks": {"request": [log_request], "response": [log_response]}},
 )
 
@@ -103,10 +74,10 @@ import httpx
 from circuit_breaker_labs import Client
 
 client = Client(
-    base_url="https://api.example.com",
+    base_url="https://api.circuitbreakerlabs.ai/v1/",
 )
 # Note that base_url needs to be re-set, as would any shared cookies, headers, etc.
-client.set_httpx_client(httpx.Client(base_url="https://api.example.com", proxies="http://localhost:8030"))
+client.set_httpx_client(httpx.Client(base_url="https://api.circuitbreakerlabs.ai/v1/", proxies="http://localhost:8030"))
 ```
 
 ## Building / publishing this package
