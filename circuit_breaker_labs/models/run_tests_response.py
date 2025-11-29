@@ -28,6 +28,7 @@ class RunTestsResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+
         total_passed = self.total_passed
 
         total_failed = self.total_failed
