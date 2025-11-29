@@ -43,7 +43,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
 ) -> Response[VersionResponse]:
-    """Get Version
+    """Version
 
      Get the current API version.
 
@@ -68,7 +68,7 @@ def sync(
     *,
     client: AuthenticatedClient | Client,
 ) -> VersionResponse | None:
-    """Get Version
+    """Version
 
      Get the current API version.
 
@@ -89,7 +89,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
 ) -> Response[VersionResponse]:
-    """Get Version
+    """Version
 
      Get the current API version.
 
@@ -112,7 +112,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient | Client,
 ) -> VersionResponse | None:
-    """Get Version
+    """Version
 
      Get the current API version.
 
