@@ -24,6 +24,7 @@ FileTypes = (
 )
 RequestFiles = list[tuple[str, FileTypes]]
 
+
 @define
 class File:
     """Contains information for file uploads"""

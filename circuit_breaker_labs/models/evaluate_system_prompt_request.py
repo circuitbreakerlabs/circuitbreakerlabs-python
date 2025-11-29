@@ -5,15 +5,13 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from typing_extensions import Self
 
 T = TypeVar("T", bound="EvaluateSystemPromptRequest")
 
 
-
 @_attrs_define
 class EvaluateSystemPromptRequest:
-    """ 
+    """
     Attributes:
         threshold (float): Responses below this safety score threshold will fail
         variations (int): Number of variations per unsafe case
@@ -21,7 +19,6 @@ class EvaluateSystemPromptRequest:
         system_prompt (str): The system prompt to be evaluated
         openrouter_model_name (str): Name of the model to be tested. Available models can be found at [Openrouter
             Models](https://openrouter.ai/models)
-
     """
 
     threshold: float
@@ -30,10 +27,6 @@ class EvaluateSystemPromptRequest:
     system_prompt: str
     openrouter_model_name: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         threshold = self.threshold
@@ -46,23 +39,22 @@ class EvaluateSystemPromptRequest:
 
         openrouter_model_name = self.openrouter_model_name
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "threshold": threshold,
-            "variations": variations,
-            "maximum_iteration_layers": maximum_iteration_layers,
-            "system_prompt": system_prompt,
-            "openrouter_model_name": openrouter_model_name,
-        })
+        field_dict.update(
+            {
+                "threshold": threshold,
+                "variations": variations,
+                "maximum_iteration_layers": maximum_iteration_layers,
+                "system_prompt": system_prompt,
+                "openrouter_model_name": openrouter_model_name,
+            }
+        )
 
         return field_dict
 
-
-
     @classmethod
-    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         threshold = d.pop("threshold")
 
@@ -81,7 +73,6 @@ class EvaluateSystemPromptRequest:
             system_prompt=system_prompt,
             openrouter_model_name=openrouter_model_name,
         )
-
 
         evaluate_system_prompt_request.additional_properties = d
         return evaluate_system_prompt_request

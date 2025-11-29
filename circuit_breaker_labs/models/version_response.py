@@ -5,53 +5,44 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from typing_extensions import Self
 
-T = TypeVar("T", bound="ValidateApiKeyResponse")
-
+T = TypeVar("T", bound="VersionResponse")
 
 
 @_attrs_define
-class ValidateApiKeyResponse:
-    """ 
+class VersionResponse:
+    """
     Attributes:
-        valid (bool): Indicates if the API key is valid
-
+        version (str): API version
     """
 
-    valid: bool
+    version: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
-        valid = self.valid
-
+        version = self.version
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "valid": valid,
-        })
+        field_dict.update(
+            {
+                "version": version,
+            }
+        )
 
         return field_dict
 
-
-
     @classmethod
-    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        valid = d.pop("valid")
+        version = d.pop("version")
 
-        validate_api_key_response = cls(
-            valid=valid,
+        version_response = cls(
+            version=version,
         )
 
-
-        validate_api_key_response.additional_properties = d
-        return validate_api_key_response
+        version_response.additional_properties = d
+        return version_response
 
     @property
     def additional_keys(self) -> list[str]:

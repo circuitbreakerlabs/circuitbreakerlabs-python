@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "circuit-breaker-labs-api-client"
+name = "circuit-breaker-labs"
 version = "1.0.0"
 description = "A client library for accessing Circuit Breaker Labs API"
 authors = []
 readme = "README.md"
 packages = [
-    { include = "circuit_breaker_labs_api_client" },
+    { include = "circuit_breaker_labs" },
 ]
-include = ["circuit_breaker_labs_api_client/py.typed"]
+include = ["circuit_breaker_labs/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.10"

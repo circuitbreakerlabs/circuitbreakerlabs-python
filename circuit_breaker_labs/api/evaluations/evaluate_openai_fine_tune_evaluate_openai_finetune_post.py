@@ -18,18 +18,11 @@ def _get_kwargs(
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     headers["cbl-api-key"] = cbl_api_key
 
     headers["openai-api-key"] = openai_api_key
-
-
-
-
-
-
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -38,49 +31,44 @@ def _get_kwargs(
 
     _kwargs["json"] = body.to_dict()
 
-
     headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
     if response.status_code == 200:
         response_200 = RunTestsResponse.from_dict(response.json())
-
-
 
         return response_200
 
     if response.status_code == 401:
         response_401 = UnauthorizedError.from_dict(response.json())
 
-
-
         return response_401
 
     if response.status_code == 403:
         response_403 = QuotaExceededError.from_dict(response.json())
-
-
 
         return response_403
 
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
-
-
         return response_422
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
-    return None
+    else:
+        return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -95,7 +83,6 @@ def sync_detailed(
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-
 ) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
     """Evaluate OpenAI Fine Tune
 
@@ -119,13 +106,12 @@ def sync_detailed(
 
     Returns:
         Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]
-
     """
+
     kwargs = _get_kwargs(
         body=body,
-cbl_api_key=cbl_api_key,
-openai_api_key=openai_api_key,
-
+        cbl_api_key=cbl_api_key,
+        openai_api_key=openai_api_key,
     )
 
     response = client.get_httpx_client().request(
@@ -134,13 +120,13 @@ openai_api_key=openai_api_key,
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient | Client,
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-
 ) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
     """Evaluate OpenAI Fine Tune
 
@@ -164,15 +150,15 @@ def sync(
 
     Returns:
         HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError
-
     """
+
     return sync_detailed(
         client=client,
-body=body,
-cbl_api_key=cbl_api_key,
-openai_api_key=openai_api_key,
-
+        body=body,
+        cbl_api_key=cbl_api_key,
+        openai_api_key=openai_api_key,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
@@ -180,7 +166,6 @@ async def asyncio_detailed(
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-
 ) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
     """Evaluate OpenAI Fine Tune
 
@@ -204,20 +189,18 @@ async def asyncio_detailed(
 
     Returns:
         Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]
-
     """
+
     kwargs = _get_kwargs(
         body=body,
-cbl_api_key=cbl_api_key,
-openai_api_key=openai_api_key,
-
+        cbl_api_key=cbl_api_key,
+        openai_api_key=openai_api_key,
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs,
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
@@ -225,7 +208,6 @@ async def asyncio(
     body: EvaluateOpenAiFinetuneRequest,
     cbl_api_key: str,
     openai_api_key: str,
-
 ) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
     """Evaluate OpenAI Fine Tune
 
@@ -249,12 +231,13 @@ async def asyncio(
 
     Returns:
         HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError
-
     """
-    return (await asyncio_detailed(
-        client=client,
-body=body,
-cbl_api_key=cbl_api_key,
-openai_api_key=openai_api_key,
 
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+            cbl_api_key=cbl_api_key,
+            openai_api_key=openai_api_key,
+        )
+    ).parsed

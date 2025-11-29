@@ -5,65 +5,67 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.evaluate_system_prompt_request import EvaluateSystemPromptRequest
 from ...models.http_validation_error import HTTPValidationError
-from ...models.monthly_quota_response import MonthlyQuotaResponse
+from ...models.quota_exceeded_error import QuotaExceededError
+from ...models.run_tests_response import RunTestsResponse
 from ...models.unauthorized_error import UnauthorizedError
 from ...types import Response
 
 
 def _get_kwargs(
     *,
+    body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
-
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     headers["cbl-api-key"] = cbl_api_key
 
-
-
-
-
-
-
     _kwargs: dict[str, Any] = {
-        "method": "get",
-        "url": "/monthly_quota",
+        "method": "post",
+        "url": "/evaluate_system_prompt",
     }
 
+    _kwargs["json"] = body.to_dict()
+
+    headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
     return _kwargs
 
 
-
-def _parse_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError | None:
+def _parse_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
     if response.status_code == 200:
-        response_200 = MonthlyQuotaResponse.from_dict(response.json())
-
-
+        response_200 = RunTestsResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 401:
         response_401 = UnauthorizedError.from_dict(response.json())
 
-
-
         return response_401
+
+    if response.status_code == 403:
+        response_403 = QuotaExceededError.from_dict(response.json())
+
+        return response_403
 
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
-
-
 
         return response_422
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
-    return None
+    else:
+        return None
 
 
-def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Response) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]:
+def _build_response(
+    *, client: AuthenticatedClient | Client, response: httpx.Response
+) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -75,27 +77,28 @@ def _build_response(*, client: AuthenticatedClient | Client, response: httpx.Res
 def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
+    body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
+) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
+    """Evaluate System Prompt
 
-) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]:
-    """Monthly Quota
-
-     Get the monthly usage statistics for the provided API key.
+     Run agentic safety tests aginst a system prompt.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
+        body (EvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]
-
+        Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]
     """
-    kwargs = _get_kwargs(
-        cbl_api_key=cbl_api_key,
 
+    kwargs = _get_kwargs(
+        body=body,
+        cbl_api_key=cbl_api_key,
     )
 
     response = client.get_httpx_client().request(
@@ -104,88 +107,94 @@ def sync_detailed(
 
     return _build_response(client=client, response=response)
 
+
 def sync(
     *,
     client: AuthenticatedClient | Client,
+    body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
+) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
+    """Evaluate System Prompt
 
-) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError | None:
-    """Monthly Quota
-
-     Get the monthly usage statistics for the provided API key.
+     Run agentic safety tests aginst a system prompt.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
+        body (EvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError
-
+        HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError
     """
+
     return sync_detailed(
         client=client,
-cbl_api_key=cbl_api_key,
-
+        body=body,
+        cbl_api_key=cbl_api_key,
     ).parsed
+
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
+    body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
+) -> Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]:
+    """Evaluate System Prompt
 
-) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]:
-    """Monthly Quota
-
-     Get the monthly usage statistics for the provided API key.
+     Run agentic safety tests aginst a system prompt.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
+        body (EvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]
-
+        Response[HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError]
     """
+
     kwargs = _get_kwargs(
+        body=body,
         cbl_api_key=cbl_api_key,
-
     )
 
-    response = await client.get_async_httpx_client().request(
-        **kwargs,
-    )
+    response = await client.get_async_httpx_client().request(**kwargs)
 
     return _build_response(client=client, response=response)
+
 
 async def asyncio(
     *,
     client: AuthenticatedClient | Client,
+    body: EvaluateSystemPromptRequest,
     cbl_api_key: str,
+) -> HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError | None:
+    """Evaluate System Prompt
 
-) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError | None:
-    """Monthly Quota
-
-     Get the monthly usage statistics for the provided API key.
+     Run agentic safety tests aginst a system prompt.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
+        body (EvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError
-
+        HTTPValidationError | QuotaExceededError | RunTestsResponse | UnauthorizedError
     """
-    return (await asyncio_detailed(
-        client=client,
-cbl_api_key=cbl_api_key,
 
-    )).parsed
+    return (
+        await asyncio_detailed(
+            client=client,
+            body=body,
+            cbl_api_key=cbl_api_key,
+        )
+    ).parsed

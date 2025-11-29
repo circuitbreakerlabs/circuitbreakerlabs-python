@@ -5,37 +5,27 @@ from typing import TYPE_CHECKING, Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from typing_extensions import Self
 
 if TYPE_CHECKING:
-  from ..models.failed_test_result import FailedTestResult
-
-
-
+    from ..models.failed_test_result import FailedTestResult
 
 
 T = TypeVar("T", bound="RunTestsResponse")
 
 
-
 @_attrs_define
 class RunTestsResponse:
-    """ 
+    """
     Attributes:
         total_passed (int): Total number of test cases that passed across all iteration layers
         total_failed (int): Total number of test cases that failed across all iteration layers
         failed_results (list[list[FailedTestResult]]): Failed test cases executed per iteration layer
-
     """
 
     total_passed: int
     total_failed: int
     failed_results: list[list[FailedTestResult]]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
-
-
-
-
 
     def to_dict(self) -> dict[str, Any]:
         total_passed = self.total_passed
@@ -49,27 +39,24 @@ class RunTestsResponse:
                 failed_results_item_item = failed_results_item_item_data.to_dict()
                 failed_results_item.append(failed_results_item_item)
 
-
             failed_results.append(failed_results_item)
-
-
-
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "total_passed": total_passed,
-            "total_failed": total_failed,
-            "failed_results": failed_results,
-        })
+        field_dict.update(
+            {
+                "total_passed": total_passed,
+                "total_failed": total_failed,
+                "failed_results": failed_results,
+            }
+        )
 
         return field_dict
 
-
-
     @classmethod
-    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.failed_test_result import FailedTestResult
+
         d = dict(src_dict)
         total_passed = d.pop("total_passed")
 
@@ -77,25 +64,21 @@ class RunTestsResponse:
 
         failed_results = []
         _failed_results = d.pop("failed_results")
-        for failed_results_item_data in (_failed_results):
+        for failed_results_item_data in _failed_results:
             failed_results_item = []
             _failed_results_item = failed_results_item_data
-            for failed_results_item_item_data in (_failed_results_item):
+            for failed_results_item_item_data in _failed_results_item:
                 failed_results_item_item = FailedTestResult.from_dict(failed_results_item_item_data)
-
-
 
                 failed_results_item.append(failed_results_item_item)
 
             failed_results.append(failed_results_item)
-
 
         run_tests_response = cls(
             total_passed=total_passed,
             total_failed=total_failed,
             failed_results=failed_results,
         )
-
 
         run_tests_response.additional_properties = d
         return run_tests_response

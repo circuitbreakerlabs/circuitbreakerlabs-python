@@ -5,12 +5,10 @@ from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-from typing_extensions import Self
 
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="QuotaExceededError")
-
 
 
 @_attrs_define
@@ -20,37 +18,31 @@ class QuotaExceededError:
     Attributes:
         message (str):
         error (str | Unset):  Default: 'quota_exceeded'.
-
     """
 
     message: str
     error: str | Unset = "quota_exceeded"
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
-
-
-
-
     def to_dict(self) -> dict[str, Any]:
         message = self.message
 
         error = self.error
 
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({
-            "message": message,
-        })
+        field_dict.update(
+            {
+                "message": message,
+            }
+        )
         if error is not UNSET:
             field_dict["error"] = error
 
         return field_dict
 
-
-
     @classmethod
-    def from_dict(cls, src_dict: Mapping[str, Any]) -> Self:
+    def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         message = d.pop("message")
 
@@ -60,7 +52,6 @@ class QuotaExceededError:
             message=message,
             error=error,
         )
-
 
         quota_exceeded_error.additional_properties = d
         return quota_exceeded_error
