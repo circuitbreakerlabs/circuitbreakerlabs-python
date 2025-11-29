@@ -13,26 +13,49 @@ client = Client(base_url="{{ base_url }}")
 Now call your endpoint and use your models:
 
 ```python
-from {{ package_name }}.models import MyDataModel
-from {{ package_name }}.api.my_tag import get_my_data_model
-from {{ package_name }}.types import Response
+import os
+
+from {{ package_name }}.api.evaluations import evaluate_system_prompt_post
+from {{ package_name }}.models import EvaluateSystemPromptRequest
 
 with client as client:
-    my_data: MyDataModel = get_my_data_model.sync(client=client)
-    # or if you need more info (e.g. status_code)
-    response: Response[MyDataModel] = get_my_data_model.sync_detailed(client=client)
+    request = EvaluateSystemPromptRequest(
+        0.5,
+        3,
+        2,
+        os.getenv("SYSTEM_PROMPT"),
+        "anthropic/claude-3.7-sonnet",
+    )
+
+    run_tests_response = evaluate_system_prompt_post.sync(
+        client=client,
+        cbl_api_key=os.getenv("CBL_API_KEY"),
+        body=request,
+    )
 ```
 
 Or do the same thing with an async version:
 
 ```python
-from {{ package_name }}.models import MyDataModel
-from {{ package_name }}.api.my_tag import get_my_data_model
-from {{ package_name }}.types import Response
+import os
+
+from {{ package_name }}.api.evaluations import evaluate_system_prompt_post
+from {{ package_name }}.models import EvaluateSystemPromptRequest
 
 async with client as client:
-    my_data: MyDataModel = await get_my_data_model.asyncio(client=client)
-    response: Response[MyDataModel] = await get_my_data_model.asyncio_detailed(client=client)
+    request = EvaluateSystemPromptRequest(
+        0.5,
+        3,
+        2,
+        os.getenv("SYSTEM_PROMPT"),
+        "anthropic/claude-3.7-sonnet",
+    )
+
+    run_tests_response = evaluate_system_prompt_post.asyncio(
+        client=client,
+        cbl_api_key=os.getenv("CBL_API_KEY"),
+        body=request,
+    )
 ```
 
 Things to know:

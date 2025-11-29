@@ -12,26 +12,49 @@ client = Client(base_url="https://api.circuitbreakerlabs.ai/v1/")
 Now call your endpoint and use your models:
 
 ```python
-from circuit_breaker_labs.models import MyDataModel
-from circuit_breaker_labs.api.my_tag import get_my_data_model
-from circuit_breaker_labs.types import Response
+import os
+
+from circuit_breaker_labs.api.evaluations import evaluate_system_prompt_post
+from circuit_breaker_labs.models import EvaluateSystemPromptRequest
 
 with client as client:
-    my_data: MyDataModel = get_my_data_model.sync(client=client)
-    # or if you need more info (e.g. status_code)
-    response: Response[MyDataModel] = get_my_data_model.sync_detailed(client=client)
+    request = EvaluateSystemPromptRequest(
+        0.5,
+        3,
+        2,
+        os.getenv("SYSTEM_PROMPT"),
+        "anthropic/claude-3.7-sonnet",
+    )
+
+    run_tests_response = evaluate_system_prompt_post.sync(
+        client=client,
+        cbl_api_key=os.getenv("CBL_API_KEY"),
+        body=request,
+    )
 ```
 
 Or do the same thing with an async version:
 
 ```python
-from circuit_breaker_labs.models import MyDataModel
-from circuit_breaker_labs.api.my_tag import get_my_data_model
-from circuit_breaker_labs.types import Response
+import os
+
+from circuit_breaker_labs.api.evaluations import evaluate_system_prompt_post
+from circuit_breaker_labs.models import EvaluateSystemPromptRequest
 
 async with client as client:
-    my_data: MyDataModel = await get_my_data_model.asyncio(client=client)
-    response: Response[MyDataModel] = await get_my_data_model.asyncio_detailed(client=client)
+    request = EvaluateSystemPromptRequest(
+        0.5,
+        3,
+        2,
+        os.getenv("SYSTEM_PROMPT"),
+        "anthropic/claude-3.7-sonnet",
+    )
+
+    run_tests_response = evaluate_system_prompt_post.asyncio(
+        client=client,
+        cbl_api_key=os.getenv("CBL_API_KEY"),
+        body=request,
+    )
 ```
 
 Things to know:
@@ -79,16 +102,3 @@ client = Client(
 # Note that base_url needs to be re-set, as would any shared cookies, headers, etc.
 client.set_httpx_client(httpx.Client(base_url="https://api.circuitbreakerlabs.ai/v1/", proxies="http://localhost:8030"))
 ```
-
-## Building / publishing this package
-This project uses [uv](https://github.com/astral-sh/uv) to manage dependencies and packaging. Here are the basics:
-1. Update the metadata in `pyproject.toml` (e.g. authors, version).
-2. If you're using a private repository: https://docs.astral.sh/uv/guides/integration/alternative-indexes/
-3. Build a distribution with `uv build`, builds `sdist` and `wheel` by default.
-1. Publish the client with `uv publish`, see documentation for publishing to private indexes.
-
-If you want to install this client into another project without publishing it (e.g. for development) then:
-1. If that project **is using uv**, you can simply do `uv add <path-to-this-client>` from that project
-1. If that project is not using uv:
-    1. Build a wheel with `uv build --wheel`.
-    1. Install that wheel from the other project `pip install <path-to-wheel>`.
