@@ -44,6 +44,18 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Install uv
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+          python-version: "3.10"
+
+      - name: Build package
+        if: steps.check_tag.outputs.exists == 'false'
+        run: uv build
+
       - name: Create tag and release
         if: steps.check_tag.outputs.exists == 'false'
         env:
@@ -55,7 +67,8 @@ jobs:
           git push origin ${{ steps.version.outputs.version }}
           gh release create ${{ steps.version.outputs.version }} \
             --title "${{ steps.version.outputs.version }}" \
-            --generate-notes
+            --generate-notes \
+            dist/*
 
   publish:
     needs: release
