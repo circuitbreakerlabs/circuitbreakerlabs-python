@@ -62,4 +62,5 @@ jobs:
           uv pip install mypy
 
       - name: Run Mypy
-        run: uv run mypy --strict circuit_breaker_labs
+        run: |
+          uv run mypy --strict circuit_breaker_labs
