@@ -24,5 +24,3 @@ line-length = 120
 
 [tool.ruff.lint]
 select = ["F", "I", "UP"]
-
-# change to trigger action
