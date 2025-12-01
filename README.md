@@ -13,8 +13,6 @@
 
 ## Usage
 
-Extra text
-
 First, create a client:
 
 ```python
