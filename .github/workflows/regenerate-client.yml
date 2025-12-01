@@ -55,4 +55,4 @@ jobs:
           gh pr merge --auto --squash "${{ steps.cpr.outputs.pull-request-number
           }}"
         env:
-          GH_TOKEN: ${{ secrets.AUTOMERGE_TOKEN }}
+          GH_TOKEN: ${{ secrets.AUTOMERGE_PAT }}
