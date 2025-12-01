@@ -36,7 +36,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.AUTOMERGE_PAT }}
           commit-message: "chore: regenerate python client"
           title: "chore: regenerate python client"
           body: |
