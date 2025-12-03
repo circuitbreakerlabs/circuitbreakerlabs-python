@@ -4,6 +4,7 @@
 ![Ruff](https://img.shields.io/badge/Ruff-Check-34223D?logo=ruff)
 [![MyPy](https://img.shields.io/badge/Mypy-Check-blue?logo=python)](https://github.com/circuitbreakerlabs/circuitbreakerlabs-python/actions/workflows/type-checking.yml)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
+[![PyPI - Version](https://img.shields.io/pypi/v/circuit-breaker-labs?logo=pypi&label=PyPi)](https://pypi.org/project/circuit-breaker-labs/)
 
 <!-- prettier-ignore-start -->
 > [!Note]
