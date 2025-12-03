@@ -12,6 +12,16 @@
 > from [this OpenAPI spec](https://api.circuitbreakerlabs.ai/v1/openapi.json).
 <!-- prettier-ignore-end -->
 
+## Installation
+
+Install from PyPi directly:
+
+```sh
+uv pip install circuit-breaker-labs
+```
+
+Or install using a wheel/sdist distributed with [each release](https://github.com/circuitbreakerlabs/circuitbreakerlabs-python/releases).
+
 ## Usage
 
 First, create a client:
