@@ -1,6 +1,6 @@
 [project]
 name = "circuit-breaker-labs"
-version = "1.0.4"
+version = "1.0.5"
 description = "A client library for accessing Circuit Breaker Labs API"
 authors = []
 requires-python = ">=3.10"

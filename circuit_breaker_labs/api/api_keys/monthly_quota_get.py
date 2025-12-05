@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.monthly_quota_response import MonthlyQuotaResponse
-from ...models.unauthorized_error import UnauthorizedError
+from ...models.unauthorized_response import UnauthorizedResponse
 from ...types import Response
 
 
@@ -29,14 +29,14 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError | None:
+) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse | None:
     if response.status_code == 200:
         response_200 = MonthlyQuotaResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 401:
-        response_401 = UnauthorizedError.from_dict(response.json())
+        response_401 = UnauthorizedResponse.from_dict(response.json())
 
         return response_401
 
@@ -53,7 +53,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]:
+) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -66,7 +66,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
     cbl_api_key: str,
-) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]:
+) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse]:
     """Monthly Quota
 
      Get the monthly usage statistics for the provided API key.
@@ -79,7 +79,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]
+        Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -97,7 +97,7 @@ def sync(
     *,
     client: AuthenticatedClient | Client,
     cbl_api_key: str,
-) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError | None:
+) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse | None:
     """Monthly Quota
 
      Get the monthly usage statistics for the provided API key.
@@ -110,7 +110,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError
+        HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse
     """
 
     return sync_detailed(
@@ -123,7 +123,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
     cbl_api_key: str,
-) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]:
+) -> Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse]:
     """Monthly Quota
 
      Get the monthly usage statistics for the provided API key.
@@ -136,7 +136,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError]
+        Response[HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -152,7 +152,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient | Client,
     cbl_api_key: str,
-) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError | None:
+) -> HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse | None:
     """Monthly Quota
 
      Get the monthly usage statistics for the provided API key.
@@ -165,7 +165,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | MonthlyQuotaResponse | UnauthorizedError
+        HTTPValidationError | MonthlyQuotaResponse | UnauthorizedResponse
     """
 
     return (
