@@ -32,7 +32,15 @@
         devShells.default = pkgs.mkShell {
           LD_LIBRARY_PATH = lib.makeLibraryPath [ pkgs.stdenv.cc.cc ];
 
-          buildInputs = with pkgs; [ mypy ] ++ build ++ postProcessing;
+          buildInputs =
+            with pkgs;
+            [
+              mypy
+              curl
+              jq
+            ]
+            ++ build
+            ++ postProcessing;
         };
 
         apps.generate =
@@ -41,11 +49,17 @@
               name = "generate";
               runtimeInputs = build ++ postProcessing;
               text = ''
+                URL="https://api.circuitbreakerlabs.ai/v1/openapi.json"
+                OPENAPI_FILE="openapi.json"
+
                 echo "Using openapi-python-client version: $(openapi-python-client --version)"
                 echo "Using config file at: $PWD/config.yaml"
                 echo "Using additional templates from: $PWD/templates"
+                echo "Downloading from $URL"
 
-                openapi-python-client generate --url https://api.circuitbreakerlabs.ai/v1/openapi.json \
+                curl -L -sS "$URL" | jq > "$OPENAPI_FILE"
+
+                openapi-python-client generate --path "$OPENAPI_FILE" \
                   --output-path "$PWD" \
                   --overwrite \
                   --config "$PWD/config.yaml" \
