@@ -37,19 +37,19 @@ Now build a request and use it when calling an endpoint
 ```python
 import os
 
-from circuit_breaker_labs.api.evaluations import evaluate_system_prompt_post
-from circuit_breaker_labs.models import EvaluateSystemPromptRequest
+from circuit_breaker_labs.api.evaluations import singleturn_evaluate_system_prompt_post
+from circuit_breaker_labs.models import SingleTurnEvaluateSystemPromptRequest
 
 with client as client:
-    request = EvaluateSystemPromptRequest(
-        0.5,
-        3,
-        2,
-        os.getenv("SYSTEM_PROMPT"),
-        "anthropic/claude-3.7-sonnet",
+    request = SingleTurnEvaluateSystemPromptRequest(
+        threshold=0.5,
+        variations=3,
+        maximum_iteration_layers=2,
+        system_prompt=os.getenv("SYSTEM_PROMPT"),
+        openrouter_model_name="anthropic/claude-3.7-sonnet",
     )
 
-    run_tests_response = evaluate_system_prompt_post.sync(
+    run_tests_response = singleturn_evaluate_system_prompt_post.sync(
         client=client,
         cbl_api_key=os.getenv("CBL_API_KEY"),
         body=request,
@@ -61,19 +61,19 @@ Or do the same thing with an async version:
 ```python
 import os
 
-from circuit_breaker_labs.api.evaluations import evaluate_system_prompt_post
-from circuit_breaker_labs.models import EvaluateSystemPromptRequest
+from circuit_breaker_labs.api.evaluations import singleturn_evaluate_system_prompt_post
+from circuit_breaker_labs.models import SingleTurnEvaluateSystemPromptRequest
 
 async with client as client:
-    request = EvaluateSystemPromptRequest(
-        0.5,
-        3,
-        2,
-        os.getenv("SYSTEM_PROMPT"),
-        "anthropic/claude-3.7-sonnet",
+    request = SingleTurnEvaluateSystemPromptRequest(
+        threshold=0.5,
+        variations=3,
+        maximum_iteration_layers=2,
+        system_prompt=os.getenv("SYSTEM_PROMPT"),
+        openrouter_model_name="anthropic/claude-3.7-sonnet",
     )
 
-    run_tests_response = evaluate_system_prompt_post.asyncio(
+    run_tests_response = await singleturn_evaluate_system_prompt_post.asyncio(
         client=client,
         cbl_api_key=os.getenv("CBL_API_KEY"),
         body=request,
