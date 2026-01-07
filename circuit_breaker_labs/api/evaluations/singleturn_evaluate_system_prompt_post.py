@@ -5,19 +5,19 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.evaluate_system_prompt_request import EvaluateSystemPromptRequest
 from ...models.http_validation_error import HTTPValidationError
 from ...models.internal_server_error_response import InternalServerErrorResponse
 from ...models.not_found_response import NotFoundResponse
 from ...models.quota_exceeded_response import QuotaExceededResponse
-from ...models.run_tests_response import RunTestsResponse
+from ...models.single_turn_evaluate_system_prompt_request import SingleTurnEvaluateSystemPromptRequest
+from ...models.single_turn_run_tests_response import SingleTurnRunTestsResponse
 from ...models.unauthorized_response import UnauthorizedResponse
 from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: EvaluateSystemPromptRequest,
+    body: SingleTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
@@ -25,7 +25,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/evaluate_system_prompt",
+        "url": "/singleturn_evaluate_system_prompt",
     }
 
     _kwargs["json"] = body.to_dict()
@@ -43,12 +43,12 @@ def _parse_response(
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | RunTestsResponse
+    | SingleTurnRunTestsResponse
     | UnauthorizedResponse
     | None
 ):
     if response.status_code == 200:
-        response_200 = RunTestsResponse.from_dict(response.json())
+        response_200 = SingleTurnRunTestsResponse.from_dict(response.json())
 
         return response_200
 
@@ -90,7 +90,7 @@ def _build_response(
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | RunTestsResponse
+    | SingleTurnRunTestsResponse
     | UnauthorizedResponse
 ]:
     return Response(
@@ -104,30 +104,30 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
-    body: EvaluateSystemPromptRequest,
+    body: SingleTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
 ) -> Response[
     HTTPValidationError
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | RunTestsResponse
+    | SingleTurnRunTestsResponse
     | UnauthorizedResponse
 ]:
-    """Evaluate System Prompt
+    """Single-turn Evaluate System Prompt
 
-     Run agentic safety tests aginst a system prompt.
+     Run single-turn safety tests against a system prompt.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (EvaluateSystemPromptRequest):
+        body (SingleTurnEvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | RunTestsResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnRunTestsResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -145,31 +145,31 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient | Client,
-    body: EvaluateSystemPromptRequest,
+    body: SingleTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
 ) -> (
     HTTPValidationError
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | RunTestsResponse
+    | SingleTurnRunTestsResponse
     | UnauthorizedResponse
     | None
 ):
-    """Evaluate System Prompt
+    """Single-turn Evaluate System Prompt
 
-     Run agentic safety tests aginst a system prompt.
+     Run single-turn safety tests against a system prompt.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (EvaluateSystemPromptRequest):
+        body (SingleTurnEvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | RunTestsResponse | UnauthorizedResponse
+        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnRunTestsResponse | UnauthorizedResponse
     """
 
     return sync_detailed(
@@ -182,30 +182,30 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
-    body: EvaluateSystemPromptRequest,
+    body: SingleTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
 ) -> Response[
     HTTPValidationError
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | RunTestsResponse
+    | SingleTurnRunTestsResponse
     | UnauthorizedResponse
 ]:
-    """Evaluate System Prompt
+    """Single-turn Evaluate System Prompt
 
-     Run agentic safety tests aginst a system prompt.
+     Run single-turn safety tests against a system prompt.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (EvaluateSystemPromptRequest):
+        body (SingleTurnEvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | RunTestsResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnRunTestsResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -221,31 +221,31 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient | Client,
-    body: EvaluateSystemPromptRequest,
+    body: SingleTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
 ) -> (
     HTTPValidationError
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | RunTestsResponse
+    | SingleTurnRunTestsResponse
     | UnauthorizedResponse
     | None
 ):
-    """Evaluate System Prompt
+    """Single-turn Evaluate System Prompt
 
-     Run agentic safety tests aginst a system prompt.
+     Run single-turn safety tests against a system prompt.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (EvaluateSystemPromptRequest):
+        body (SingleTurnEvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | RunTestsResponse | UnauthorizedResponse
+        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnRunTestsResponse | UnauthorizedResponse
     """
 
     return (

@@ -6,11 +6,11 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="FailedTestResult")
+T = TypeVar("T", bound="SingleTurnFailedTestResult")
 
 
 @_attrs_define
-class FailedTestResult:
+class SingleTurnFailedTestResult:
     """
     Attributes:
         user_input (str): The user input that was tested
@@ -51,14 +51,14 @@ class FailedTestResult:
 
         safe_response_score = d.pop("safe_response_score")
 
-        failed_test_result = cls(
+        single_turn_failed_test_result = cls(
             user_input=user_input,
             model_response=model_response,
             safe_response_score=safe_response_score,
         )
 
-        failed_test_result.additional_properties = d
-        return failed_test_result
+        single_turn_failed_test_result.additional_properties = d
+        return single_turn_failed_test_result
 
     @property
     def additional_keys(self) -> list[str]:
