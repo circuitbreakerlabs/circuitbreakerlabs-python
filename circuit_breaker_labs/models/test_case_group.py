@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class TestCasePack(str, Enum):
+class TestCaseGroup(str, Enum):
     SUICIDAL_IDEATION = "suicidal_ideation"
 
     def __str__(self) -> str:

@@ -677,7 +677,7 @@
           },
           "max_turns": {
             "type": "integer",
-            "maximum": 6.0,
+            "maximum": 20.0,
             "minimum": 2.0,
             "title": "Max Turns",
             "description": "Maximum number of turns in the conversation. Should be a multiple of two.",
@@ -685,15 +685,29 @@
               4
             ]
           },
-          "test_case_packs": {
+          "test_case_groups": {
             "items": {
-              "$ref": "#/components/schemas/TestCasePack"
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TestCaseGroup"
+                },
+                {
+                  "type": "string"
+                }
+              ]
             },
             "type": "array",
-            "title": "Test Case Packs",
-            "description": "One or more test case packs to run. Defaults to suicidal ideation tests",
-            "examples": [
+            "uniqueItems": true,
+            "title": "Test Case Groups",
+            "description": "One or more test case groups to run. Defaults to suicidal ideation tests",
+            "default": [
               "suicidal_ideation"
+            ],
+            "examples": [
+              [
+                "my_custom_group_name",
+                "suicidal_ideation"
+              ]
             ]
           },
           "test_types": {
@@ -705,8 +719,12 @@
             "title": "Test Types",
             "description": "One or more multi-turn-test types",
             "examples": [
-              "user_persona",
-              "semantic_chunks"
+              [
+                "user_persona"
+              ],
+              [
+                "semantic_chunks"
+              ]
             ]
           },
           "model_name": {
@@ -742,7 +760,7 @@
           },
           "max_turns": {
             "type": "integer",
-            "maximum": 6.0,
+            "maximum": 20.0,
             "minimum": 2.0,
             "title": "Max Turns",
             "description": "Maximum number of turns in the conversation. Should be a multiple of two.",
@@ -750,15 +768,29 @@
               4
             ]
           },
-          "test_case_packs": {
+          "test_case_groups": {
             "items": {
-              "$ref": "#/components/schemas/TestCasePack"
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TestCaseGroup"
+                },
+                {
+                  "type": "string"
+                }
+              ]
             },
             "type": "array",
-            "title": "Test Case Packs",
-            "description": "One or more test case packs to run. Defaults to suicidal ideation tests",
-            "examples": [
+            "uniqueItems": true,
+            "title": "Test Case Groups",
+            "description": "One or more test case groups to run. Defaults to suicidal ideation tests",
+            "default": [
               "suicidal_ideation"
+            ],
+            "examples": [
+              [
+                "my_custom_group_name",
+                "suicidal_ideation"
+              ]
             ]
           },
           "test_types": {
@@ -770,8 +802,12 @@
             "title": "Test Types",
             "description": "One or more multi-turn-test types",
             "examples": [
-              "user_persona",
-              "semantic_chunks"
+              [
+                "user_persona"
+              ],
+              [
+                "semantic_chunks"
+              ]
             ]
           },
           "system_prompt": {
@@ -1019,15 +1055,29 @@
               2
             ]
           },
-          "test_case_packs": {
+          "test_case_groups": {
             "items": {
-              "$ref": "#/components/schemas/TestCasePack"
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TestCaseGroup"
+                },
+                {
+                  "type": "string"
+                }
+              ]
             },
             "type": "array",
-            "title": "Test Case Packs",
-            "description": "One or more test case packs to run. Defaults to suicidal ideation tests",
-            "examples": [
+            "uniqueItems": true,
+            "title": "Test Case Groups",
+            "description": "One or more test case groups to run. Defaults to suicidal ideation tests",
+            "default": [
               "suicidal_ideation"
+            ],
+            "examples": [
+              [
+                "my_custom_group_name",
+                "suicidal_ideation"
+              ]
             ]
           },
           "model_name": {
@@ -1081,15 +1131,29 @@
               2
             ]
           },
-          "test_case_packs": {
+          "test_case_groups": {
             "items": {
-              "$ref": "#/components/schemas/TestCasePack"
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/TestCaseGroup"
+                },
+                {
+                  "type": "string"
+                }
+              ]
             },
             "type": "array",
-            "title": "Test Case Packs",
-            "description": "One or more test case packs to run. Defaults to suicidal ideation tests",
-            "examples": [
+            "uniqueItems": true,
+            "title": "Test Case Groups",
+            "description": "One or more test case groups to run. Defaults to suicidal ideation tests",
+            "default": [
               "suicidal_ideation"
+            ],
+            "examples": [
+              [
+                "my_custom_group_name",
+                "suicidal_ideation"
+              ]
             ]
           },
           "system_prompt": {
@@ -1197,12 +1261,12 @@
         ],
         "title": "SingleTurnRunTestsResponse"
       },
-      "TestCasePack": {
+      "TestCaseGroup": {
         "type": "string",
         "enum": [
           "suicidal_ideation"
         ],
-        "title": "TestCasePack"
+        "title": "TestCaseGroup"
       },
       "UnauthorizedError": {
         "properties": {

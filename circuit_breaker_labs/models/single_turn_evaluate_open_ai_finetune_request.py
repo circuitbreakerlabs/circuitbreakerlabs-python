@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.test_case_pack import TestCasePack
+from ..models.test_case_group import TestCaseGroup
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="SingleTurnEvaluateOpenAiFinetuneRequest")
@@ -20,15 +20,15 @@ class SingleTurnEvaluateOpenAiFinetuneRequest:
         variations (int): Number of variations per unsafe case
         maximum_iteration_layers (int): Maximum iteration layers for tests
         model_name (str): Fully qualified name of the model to be tested.
-        test_case_packs (list[TestCasePack] | Unset): One or more test case packs to run. Defaults to suicidal ideation
-            tests
+        test_case_groups (list[str | TestCaseGroup] | Unset): One or more test case groups to run. Defaults to suicidal
+            ideation tests
     """
 
     threshold: float
     variations: int
     maximum_iteration_layers: int
     model_name: str
-    test_case_packs: list[TestCasePack] | Unset = UNSET
+    test_case_groups: list[str | TestCaseGroup] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -40,12 +40,16 @@ class SingleTurnEvaluateOpenAiFinetuneRequest:
 
         model_name = self.model_name
 
-        test_case_packs: list[str] | Unset = UNSET
-        if not isinstance(self.test_case_packs, Unset):
-            test_case_packs = []
-            for test_case_packs_item_data in self.test_case_packs:
-                test_case_packs_item = test_case_packs_item_data.value
-                test_case_packs.append(test_case_packs_item)
+        test_case_groups: list[str] | Unset = UNSET
+        if not isinstance(self.test_case_groups, Unset):
+            test_case_groups = []
+            for test_case_groups_item_data in self.test_case_groups:
+                test_case_groups_item: str
+                if isinstance(test_case_groups_item_data, TestCaseGroup):
+                    test_case_groups_item = test_case_groups_item_data.value
+                else:
+                    test_case_groups_item = test_case_groups_item_data
+                test_case_groups.append(test_case_groups_item)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -57,8 +61,8 @@ class SingleTurnEvaluateOpenAiFinetuneRequest:
                 "model_name": model_name,
             }
         )
-        if test_case_packs is not UNSET:
-            field_dict["test_case_packs"] = test_case_packs
+        if test_case_groups is not UNSET:
+            field_dict["test_case_groups"] = test_case_groups
 
         return field_dict
 
@@ -73,21 +77,33 @@ class SingleTurnEvaluateOpenAiFinetuneRequest:
 
         model_name = d.pop("model_name")
 
-        _test_case_packs = d.pop("test_case_packs", UNSET)
-        test_case_packs: list[TestCasePack] | Unset = UNSET
-        if _test_case_packs is not UNSET:
-            test_case_packs = []
-            for test_case_packs_item_data in _test_case_packs:
-                test_case_packs_item = TestCasePack(test_case_packs_item_data)
+        _test_case_groups = d.pop("test_case_groups", UNSET)
+        test_case_groups: list[str | TestCaseGroup] | Unset = UNSET
+        if _test_case_groups is not UNSET:
+            test_case_groups = []
+            for test_case_groups_item_data in _test_case_groups:
 
-                test_case_packs.append(test_case_packs_item)
+                def _parse_test_case_groups_item(data: object) -> str | TestCaseGroup:
+                    try:
+                        if not isinstance(data, str):
+                            raise TypeError()
+                        test_case_groups_item_type_0 = TestCaseGroup(data)
+
+                        return test_case_groups_item_type_0
+                    except (TypeError, ValueError, AttributeError, KeyError):
+                        pass
+                    return cast(str | TestCaseGroup, data)
+
+                test_case_groups_item = _parse_test_case_groups_item(test_case_groups_item_data)
+
+                test_case_groups.append(test_case_groups_item)
 
         single_turn_evaluate_open_ai_finetune_request = cls(
             threshold=threshold,
             variations=variations,
             maximum_iteration_layers=maximum_iteration_layers,
             model_name=model_name,
-            test_case_packs=test_case_packs,
+            test_case_groups=test_case_groups,
         )
 
         single_turn_evaluate_open_ai_finetune_request.additional_properties = d

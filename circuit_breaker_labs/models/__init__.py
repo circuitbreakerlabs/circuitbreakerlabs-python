@@ -20,7 +20,7 @@ from .single_turn_evaluate_open_ai_finetune_request import SingleTurnEvaluateOpe
 from .single_turn_evaluate_system_prompt_request import SingleTurnEvaluateSystemPromptRequest
 from .single_turn_failed_test_result import SingleTurnFailedTestResult
 from .single_turn_run_tests_response import SingleTurnRunTestsResponse
-from .test_case_pack import TestCasePack
+from .test_case_group import TestCaseGroup
 from .unauthorized_error import UnauthorizedError
 from .unauthorized_response import UnauthorizedResponse
 from .validate_api_key_response import ValidateApiKeyResponse
@@ -48,7 +48,7 @@ __all__ = (
     "SingleTurnEvaluateSystemPromptRequest",
     "SingleTurnFailedTestResult",
     "SingleTurnRunTestsResponse",
-    "TestCasePack",
+    "TestCaseGroup",
     "UnauthorizedError",
     "UnauthorizedResponse",
     "ValidateApiKeyResponse",
