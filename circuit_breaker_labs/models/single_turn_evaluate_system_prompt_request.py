@@ -6,9 +6,6 @@ from typing import Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.test_case_group import TestCaseGroup
-from ..types import UNSET, Unset
-
 T = TypeVar("T", bound="SingleTurnEvaluateSystemPromptRequest")
 
 
@@ -19,19 +16,18 @@ class SingleTurnEvaluateSystemPromptRequest:
         threshold (float): Responses below this safety score threshold will fail
         variations (int): Number of variations per unsafe case
         maximum_iteration_layers (int): Maximum iteration layers for tests
+        test_case_groups (list[str]): One or more test case groups to run
         system_prompt (str): The system prompt to be evaluated
         openrouter_model_name (str): Name of the model to be tested. Available models can be found at [Openrouter
             Models](https://openrouter.ai/models)
-        test_case_groups (list[str | TestCaseGroup] | Unset): One or more test case groups to run. Defaults to suicidal
-            ideation tests
     """
 
     threshold: float
     variations: int
     maximum_iteration_layers: int
+    test_case_groups: list[str]
     system_prompt: str
     openrouter_model_name: str
-    test_case_groups: list[str | TestCaseGroup] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -41,20 +37,11 @@ class SingleTurnEvaluateSystemPromptRequest:
 
         maximum_iteration_layers = self.maximum_iteration_layers
 
+        test_case_groups = self.test_case_groups
+
         system_prompt = self.system_prompt
 
         openrouter_model_name = self.openrouter_model_name
-
-        test_case_groups: list[str] | Unset = UNSET
-        if not isinstance(self.test_case_groups, Unset):
-            test_case_groups = []
-            for test_case_groups_item_data in self.test_case_groups:
-                test_case_groups_item: str
-                if isinstance(test_case_groups_item_data, TestCaseGroup):
-                    test_case_groups_item = test_case_groups_item_data.value
-                else:
-                    test_case_groups_item = test_case_groups_item_data
-                test_case_groups.append(test_case_groups_item)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -63,12 +50,11 @@ class SingleTurnEvaluateSystemPromptRequest:
                 "threshold": threshold,
                 "variations": variations,
                 "maximum_iteration_layers": maximum_iteration_layers,
+                "test_case_groups": test_case_groups,
                 "system_prompt": system_prompt,
                 "openrouter_model_name": openrouter_model_name,
             }
         )
-        if test_case_groups is not UNSET:
-            field_dict["test_case_groups"] = test_case_groups
 
         return field_dict
 
@@ -81,38 +67,19 @@ class SingleTurnEvaluateSystemPromptRequest:
 
         maximum_iteration_layers = d.pop("maximum_iteration_layers")
 
+        test_case_groups = cast(list[str], d.pop("test_case_groups"))
+
         system_prompt = d.pop("system_prompt")
 
         openrouter_model_name = d.pop("openrouter_model_name")
-
-        _test_case_groups = d.pop("test_case_groups", UNSET)
-        test_case_groups: list[str | TestCaseGroup] | Unset = UNSET
-        if _test_case_groups is not UNSET:
-            test_case_groups = []
-            for test_case_groups_item_data in _test_case_groups:
-
-                def _parse_test_case_groups_item(data: object) -> str | TestCaseGroup:
-                    try:
-                        if not isinstance(data, str):
-                            raise TypeError()
-                        test_case_groups_item_type_0 = TestCaseGroup(data)
-
-                        return test_case_groups_item_type_0
-                    except (TypeError, ValueError, AttributeError, KeyError):
-                        pass
-                    return cast(str | TestCaseGroup, data)
-
-                test_case_groups_item = _parse_test_case_groups_item(test_case_groups_item_data)
-
-                test_case_groups.append(test_case_groups_item)
 
         single_turn_evaluate_system_prompt_request = cls(
             threshold=threshold,
             variations=variations,
             maximum_iteration_layers=maximum_iteration_layers,
+            test_case_groups=test_case_groups,
             system_prompt=system_prompt,
             openrouter_model_name=openrouter_model_name,
-            test_case_groups=test_case_groups,
         )
 
         single_turn_evaluate_system_prompt_request.additional_properties = d

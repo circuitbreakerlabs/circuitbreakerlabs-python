@@ -7,24 +7,25 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
-    from ..models.single_turn_failed_test_result import SingleTurnFailedTestResult
+    from ..models.failed_single_turn_result import FailedSingleTurnResult
 
 
-T = TypeVar("T", bound="SingleTurnRunTestsResponse")
+T = TypeVar("T", bound="SingleTurnResponse")
 
 
 @_attrs_define
-class SingleTurnRunTestsResponse:
-    """
+class SingleTurnResponse:
+    """Payload for single_turn_response messages (Server -> Client).
+
     Attributes:
-        total_passed (int): Total number of test cases that passed across all iteration layers
-        total_failed (int): Total number of test cases that failed across all iteration layers
-        failed_results (list[list[SingleTurnFailedTestResult]]): Failed test cases executed per iteration layer
+        total_passed (int): Number of test cases that passed
+        total_failed (int): Number of test cases that failed
+        failed_results (list[list[FailedSingleTurnResult]]): Details of each failed test case per iteration layer
     """
 
     total_passed: int
     total_failed: int
-    failed_results: list[list[SingleTurnFailedTestResult]]
+    failed_results: list[list[FailedSingleTurnResult]]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -56,7 +57,7 @@ class SingleTurnRunTestsResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.single_turn_failed_test_result import SingleTurnFailedTestResult
+        from ..models.failed_single_turn_result import FailedSingleTurnResult
 
         d = dict(src_dict)
         total_passed = d.pop("total_passed")
@@ -69,20 +70,20 @@ class SingleTurnRunTestsResponse:
             failed_results_item = []
             _failed_results_item = failed_results_item_data
             for failed_results_item_item_data in _failed_results_item:
-                failed_results_item_item = SingleTurnFailedTestResult.from_dict(failed_results_item_item_data)
+                failed_results_item_item = FailedSingleTurnResult.from_dict(failed_results_item_item_data)
 
                 failed_results_item.append(failed_results_item_item)
 
             failed_results.append(failed_results_item)
 
-        single_turn_run_tests_response = cls(
+        single_turn_response = cls(
             total_passed=total_passed,
             total_failed=total_failed,
             failed_results=failed_results,
         )
 
-        single_turn_run_tests_response.additional_properties = d
-        return single_turn_run_tests_response
+        single_turn_response.additional_properties = d
+        return single_turn_response
 
     @property
     def additional_keys(self) -> list[str]:

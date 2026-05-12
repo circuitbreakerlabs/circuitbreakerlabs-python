@@ -1,16 +1,15 @@
 [project]
 name = "circuit-breaker-labs"
-version = "1.0.7"
+version = "1.0.8"
 description = "A client library for accessing Circuit Breaker Labs API"
 authors = []
 requires-python = ">=3.10"
 readme = "README.md"
-license = "MIT"
 dependencies = [
     "httpx>=0.23.0,<0.29.0",
     "attrs>=22.2.0",
     "python-dateutil>=2.8.0,<3",
-    "types-python-dateutil>=2.9.0.20260124",
+    "types-python-dateutil>=2.9.0.20260508",
 ]
 
 [tool.uv.build-backend]

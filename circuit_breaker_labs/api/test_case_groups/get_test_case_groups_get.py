@@ -6,31 +6,22 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
-from ...models.internal_server_error_response import InternalServerErrorResponse
-from ...models.multi_turn_evaluate_system_prompt_request import MultiTurnEvaluateSystemPromptRequest
-from ...models.multi_turn_response import MultiTurnResponse
-from ...models.not_found_response import NotFoundResponse
-from ...models.quota_exceeded_response import QuotaExceededResponse
+from ...models.test_case_group_response import TestCaseGroupResponse
 from ...models.unauthorized_response import UnauthorizedResponse
 from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: MultiTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     headers["cbl-api-key"] = cbl_api_key
 
     _kwargs: dict[str, Any] = {
-        "method": "post",
-        "url": "/multiturn_evaluate_system_prompt",
+        "method": "get",
+        "url": "/test_case_groups",
     }
-
-    _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
 
     _kwargs["headers"] = headers
     return _kwargs
@@ -38,17 +29,14 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> (
-    HTTPValidationError
-    | InternalServerErrorResponse
-    | MultiTurnResponse
-    | NotFoundResponse
-    | QuotaExceededResponse
-    | UnauthorizedResponse
-    | None
-):
+) -> HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse] | None:
     if response.status_code == 200:
-        response_200 = MultiTurnResponse.from_dict(response.json())
+        response_200 = []
+        _response_200 = response.json()
+        for response_200_item_data in _response_200:
+            response_200_item = TestCaseGroupResponse.from_dict(response_200_item_data)
+
+            response_200.append(response_200_item)
 
         return response_200
 
@@ -57,25 +45,10 @@ def _parse_response(
 
         return response_401
 
-    if response.status_code == 403:
-        response_403 = QuotaExceededResponse.from_dict(response.json())
-
-        return response_403
-
-    if response.status_code == 404:
-        response_404 = NotFoundResponse.from_dict(response.json())
-
-        return response_404
-
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
 
         return response_422
-
-    if response.status_code == 500:
-        response_500 = InternalServerErrorResponse.from_dict(response.json())
-
-        return response_500
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -85,14 +58,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[
-    HTTPValidationError
-    | InternalServerErrorResponse
-    | MultiTurnResponse
-    | NotFoundResponse
-    | QuotaExceededResponse
-    | UnauthorizedResponse
-]:
+) -> Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -104,34 +70,24 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
-    body: MultiTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
-) -> Response[
-    HTTPValidationError
-    | InternalServerErrorResponse
-    | MultiTurnResponse
-    | NotFoundResponse
-    | QuotaExceededResponse
-    | UnauthorizedResponse
-]:
-    """Multi-turn Evaluate System Prompt
+) -> Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]:
+    """Get Test Case Groups
 
-     Run multi-turn safety tests against a system prompt.
+     List the test case groups accessible to the current API key's user.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (MultiTurnEvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]
     """
 
     kwargs = _get_kwargs(
-        body=body,
         cbl_api_key=cbl_api_key,
     )
 
@@ -145,36 +101,25 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient | Client,
-    body: MultiTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
-) -> (
-    HTTPValidationError
-    | InternalServerErrorResponse
-    | MultiTurnResponse
-    | NotFoundResponse
-    | QuotaExceededResponse
-    | UnauthorizedResponse
-    | None
-):
-    """Multi-turn Evaluate System Prompt
+) -> HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse] | None:
+    """Get Test Case Groups
 
-     Run multi-turn safety tests against a system prompt.
+     List the test case groups accessible to the current API key's user.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (MultiTurnEvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse
+        HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]
     """
 
     return sync_detailed(
         client=client,
-        body=body,
         cbl_api_key=cbl_api_key,
     ).parsed
 
@@ -182,34 +127,24 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
-    body: MultiTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
-) -> Response[
-    HTTPValidationError
-    | InternalServerErrorResponse
-    | MultiTurnResponse
-    | NotFoundResponse
-    | QuotaExceededResponse
-    | UnauthorizedResponse
-]:
-    """Multi-turn Evaluate System Prompt
+) -> Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]:
+    """Get Test Case Groups
 
-     Run multi-turn safety tests against a system prompt.
+     List the test case groups accessible to the current API key's user.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (MultiTurnEvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]
     """
 
     kwargs = _get_kwargs(
-        body=body,
         cbl_api_key=cbl_api_key,
     )
 
@@ -221,37 +156,26 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient | Client,
-    body: MultiTurnEvaluateSystemPromptRequest,
     cbl_api_key: str,
-) -> (
-    HTTPValidationError
-    | InternalServerErrorResponse
-    | MultiTurnResponse
-    | NotFoundResponse
-    | QuotaExceededResponse
-    | UnauthorizedResponse
-    | None
-):
-    """Multi-turn Evaluate System Prompt
+) -> HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse] | None:
+    """Get Test Case Groups
 
-     Run multi-turn safety tests against a system prompt.
+     List the test case groups accessible to the current API key's user.
 
     Args:
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (MultiTurnEvaluateSystemPromptRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse
+        HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            body=body,
             cbl_api_key=cbl_api_key,
         )
     ).parsed

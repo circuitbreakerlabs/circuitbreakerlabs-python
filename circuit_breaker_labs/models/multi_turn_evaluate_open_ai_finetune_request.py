@@ -6,10 +6,6 @@ from typing import Any, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.multi_turn_test_type import MultiTurnTestType
-from ..models.test_case_group import TestCaseGroup
-from ..types import UNSET, Unset
-
 T = TypeVar("T", bound="MultiTurnEvaluateOpenAiFinetuneRequest")
 
 
@@ -19,17 +15,14 @@ class MultiTurnEvaluateOpenAiFinetuneRequest:
     Attributes:
         threshold (float): Responses below this safety score threshold will fail
         max_turns (int): Maximum number of turns in the conversation. Should be a multiple of two.
-        test_types (list[MultiTurnTestType]): One or more multi-turn-test types
+        test_case_groups (list[str]): One or more test case groups to run
         model_name (str): Fully qualified name of the model to be tested.
-        test_case_groups (list[str | TestCaseGroup] | Unset): One or more test case groups to run. Defaults to suicidal
-            ideation tests
     """
 
     threshold: float
     max_turns: int
-    test_types: list[MultiTurnTestType]
+    test_case_groups: list[str]
     model_name: str
-    test_case_groups: list[str | TestCaseGroup] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -37,23 +30,9 @@ class MultiTurnEvaluateOpenAiFinetuneRequest:
 
         max_turns = self.max_turns
 
-        test_types = []
-        for test_types_item_data in self.test_types:
-            test_types_item = test_types_item_data.value
-            test_types.append(test_types_item)
+        test_case_groups = self.test_case_groups
 
         model_name = self.model_name
-
-        test_case_groups: list[str] | Unset = UNSET
-        if not isinstance(self.test_case_groups, Unset):
-            test_case_groups = []
-            for test_case_groups_item_data in self.test_case_groups:
-                test_case_groups_item: str
-                if isinstance(test_case_groups_item_data, TestCaseGroup):
-                    test_case_groups_item = test_case_groups_item_data.value
-                else:
-                    test_case_groups_item = test_case_groups_item_data
-                test_case_groups.append(test_case_groups_item)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -61,12 +40,10 @@ class MultiTurnEvaluateOpenAiFinetuneRequest:
             {
                 "threshold": threshold,
                 "max_turns": max_turns,
-                "test_types": test_types,
+                "test_case_groups": test_case_groups,
                 "model_name": model_name,
             }
         )
-        if test_case_groups is not UNSET:
-            field_dict["test_case_groups"] = test_case_groups
 
         return field_dict
 
@@ -77,42 +54,15 @@ class MultiTurnEvaluateOpenAiFinetuneRequest:
 
         max_turns = d.pop("max_turns")
 
-        test_types = []
-        _test_types = d.pop("test_types")
-        for test_types_item_data in _test_types:
-            test_types_item = MultiTurnTestType(test_types_item_data)
-
-            test_types.append(test_types_item)
+        test_case_groups = cast(list[str], d.pop("test_case_groups"))
 
         model_name = d.pop("model_name")
-
-        _test_case_groups = d.pop("test_case_groups", UNSET)
-        test_case_groups: list[str | TestCaseGroup] | Unset = UNSET
-        if _test_case_groups is not UNSET:
-            test_case_groups = []
-            for test_case_groups_item_data in _test_case_groups:
-
-                def _parse_test_case_groups_item(data: object) -> str | TestCaseGroup:
-                    try:
-                        if not isinstance(data, str):
-                            raise TypeError()
-                        test_case_groups_item_type_0 = TestCaseGroup(data)
-
-                        return test_case_groups_item_type_0
-                    except (TypeError, ValueError, AttributeError, KeyError):
-                        pass
-                    return cast(str | TestCaseGroup, data)
-
-                test_case_groups_item = _parse_test_case_groups_item(test_case_groups_item_data)
-
-                test_case_groups.append(test_case_groups_item)
 
         multi_turn_evaluate_open_ai_finetune_request = cls(
             threshold=threshold,
             max_turns=max_turns,
-            test_types=test_types,
-            model_name=model_name,
             test_case_groups=test_case_groups,
+            model_name=model_name,
         )
 
         multi_turn_evaluate_open_ai_finetune_request.additional_properties = d

@@ -10,7 +10,7 @@ from ...models.internal_server_error_response import InternalServerErrorResponse
 from ...models.not_found_response import NotFoundResponse
 from ...models.quota_exceeded_response import QuotaExceededResponse
 from ...models.single_turn_evaluate_system_prompt_request import SingleTurnEvaluateSystemPromptRequest
-from ...models.single_turn_run_tests_response import SingleTurnRunTestsResponse
+from ...models.single_turn_response import SingleTurnResponse
 from ...models.unauthorized_response import UnauthorizedResponse
 from ...types import Response
 
@@ -43,12 +43,12 @@ def _parse_response(
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnRunTestsResponse
+    | SingleTurnResponse
     | UnauthorizedResponse
     | None
 ):
     if response.status_code == 200:
-        response_200 = SingleTurnRunTestsResponse.from_dict(response.json())
+        response_200 = SingleTurnResponse.from_dict(response.json())
 
         return response_200
 
@@ -90,7 +90,7 @@ def _build_response(
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnRunTestsResponse
+    | SingleTurnResponse
     | UnauthorizedResponse
 ]:
     return Response(
@@ -111,7 +111,7 @@ def sync_detailed(
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnRunTestsResponse
+    | SingleTurnResponse
     | UnauthorizedResponse
 ]:
     """Single-turn Evaluate System Prompt
@@ -127,7 +127,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnRunTestsResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -152,7 +152,7 @@ def sync(
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnRunTestsResponse
+    | SingleTurnResponse
     | UnauthorizedResponse
     | None
 ):
@@ -169,7 +169,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnRunTestsResponse | UnauthorizedResponse
+        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnResponse | UnauthorizedResponse
     """
 
     return sync_detailed(
@@ -189,7 +189,7 @@ async def asyncio_detailed(
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnRunTestsResponse
+    | SingleTurnResponse
     | UnauthorizedResponse
 ]:
     """Single-turn Evaluate System Prompt
@@ -205,7 +205,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnRunTestsResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -228,7 +228,7 @@ async def asyncio(
     | InternalServerErrorResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnRunTestsResponse
+    | SingleTurnResponse
     | UnauthorizedResponse
     | None
 ):
@@ -245,7 +245,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnRunTestsResponse | UnauthorizedResponse
+        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnResponse | UnauthorizedResponse
     """
 
     return (
