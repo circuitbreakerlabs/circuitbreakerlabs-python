@@ -10,25 +10,29 @@ if TYPE_CHECKING:
     from ..models.message import Message
 
 
-T = TypeVar("T", bound="MultiTurnFailedTestResult")
+T = TypeVar("T", bound="FailedMultiTurnResult")
 
 
 @_attrs_define
-class MultiTurnFailedTestResult:
-    """
+class FailedMultiTurnResult:
+    """Details of a failed multi-turn conversation.
+
     Attributes:
-        min_safe_response_score (float): Minimum safety score across all responses in the conversation (0.0 = unsafe,
-            1.0 = safe)
-        conversation (list[Message]):
+        min_safe_response_score (float): Lowest safety score in the conversation
+        conversation_id (int): Unique identifier for this conversation across this request
+        conversation (list[Message]): Full conversation history in role/content format
     """
 
     min_safe_response_score: float
+    conversation_id: int
     conversation: list[Message]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
 
         min_safe_response_score = self.min_safe_response_score
+
+        conversation_id = self.conversation_id
 
         conversation = []
         for conversation_item_data in self.conversation:
@@ -40,6 +44,7 @@ class MultiTurnFailedTestResult:
         field_dict.update(
             {
                 "min_safe_response_score": min_safe_response_score,
+                "conversation_id": conversation_id,
                 "conversation": conversation,
             }
         )
@@ -53,6 +58,8 @@ class MultiTurnFailedTestResult:
         d = dict(src_dict)
         min_safe_response_score = d.pop("min_safe_response_score")
 
+        conversation_id = d.pop("conversation_id")
+
         conversation = []
         _conversation = d.pop("conversation")
         for conversation_item_data in _conversation:
@@ -60,13 +67,14 @@ class MultiTurnFailedTestResult:
 
             conversation.append(conversation_item)
 
-        multi_turn_failed_test_result = cls(
+        failed_multi_turn_result = cls(
             min_safe_response_score=min_safe_response_score,
+            conversation_id=conversation_id,
             conversation=conversation,
         )
 
-        multi_turn_failed_test_result.additional_properties = d
-        return multi_turn_failed_test_result
+        failed_multi_turn_result.additional_properties = d
+        return failed_multi_turn_result
 
     @property
     def additional_keys(self) -> list[str]:

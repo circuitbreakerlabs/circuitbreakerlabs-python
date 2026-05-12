@@ -8,7 +8,7 @@ from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.internal_server_error_response import InternalServerErrorResponse
 from ...models.multi_turn_evaluate_open_ai_finetune_request import MultiTurnEvaluateOpenAiFinetuneRequest
-from ...models.multi_turn_run_tests_response import MultiTurnRunTestsResponse
+from ...models.multi_turn_response import MultiTurnResponse
 from ...models.not_found_response import NotFoundResponse
 from ...models.quota_exceeded_response import QuotaExceededResponse
 from ...models.unauthorized_response import UnauthorizedResponse
@@ -18,13 +18,13 @@ from ...types import Response
 def _get_kwargs(
     *,
     body: MultiTurnEvaluateOpenAiFinetuneRequest,
-    cbl_api_key: str,
     openai_api_key: str,
+    cbl_api_key: str,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
-    headers["cbl-api-key"] = cbl_api_key
-
     headers["openai-api-key"] = openai_api_key
+
+    headers["cbl-api-key"] = cbl_api_key
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -44,14 +44,14 @@ def _parse_response(
 ) -> (
     HTTPValidationError
     | InternalServerErrorResponse
-    | MultiTurnRunTestsResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
     | UnauthorizedResponse
     | None
 ):
     if response.status_code == 200:
-        response_200 = MultiTurnRunTestsResponse.from_dict(response.json())
+        response_200 = MultiTurnResponse.from_dict(response.json())
 
         return response_200
 
@@ -91,7 +91,7 @@ def _build_response(
 ) -> Response[
     HTTPValidationError
     | InternalServerErrorResponse
-    | MultiTurnRunTestsResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
     | UnauthorizedResponse
@@ -108,12 +108,12 @@ def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
     body: MultiTurnEvaluateOpenAiFinetuneRequest,
-    cbl_api_key: str,
     openai_api_key: str,
+    cbl_api_key: str,
 ) -> Response[
     HTTPValidationError
     | InternalServerErrorResponse
-    | MultiTurnRunTestsResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
     | UnauthorizedResponse
@@ -123,7 +123,6 @@ def sync_detailed(
      Run multi-turn safety tests against an OpenAI fine-tuned model.
 
     Args:
-        cbl_api_key (str): Circuit Breaker Labs API Key
         openai_api_key (str):
             The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
             reference/project-service-accounts) within the same project as the finetuned model. The
@@ -132,6 +131,7 @@ def sync_detailed(
             You can create a new API key associated with a service account and project
             [here](https://platform.openai.com/api-keys).
 
+        cbl_api_key (str): Circuit Breaker Labs API Key
         body (MultiTurnEvaluateOpenAiFinetuneRequest):
 
     Raises:
@@ -139,13 +139,13 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | MultiTurnRunTestsResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
         body=body,
-        cbl_api_key=cbl_api_key,
         openai_api_key=openai_api_key,
+        cbl_api_key=cbl_api_key,
     )
 
     response = client.get_httpx_client().request(
@@ -159,12 +159,12 @@ def sync(
     *,
     client: AuthenticatedClient | Client,
     body: MultiTurnEvaluateOpenAiFinetuneRequest,
-    cbl_api_key: str,
     openai_api_key: str,
+    cbl_api_key: str,
 ) -> (
     HTTPValidationError
     | InternalServerErrorResponse
-    | MultiTurnRunTestsResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
     | UnauthorizedResponse
@@ -175,7 +175,6 @@ def sync(
      Run multi-turn safety tests against an OpenAI fine-tuned model.
 
     Args:
-        cbl_api_key (str): Circuit Breaker Labs API Key
         openai_api_key (str):
             The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
             reference/project-service-accounts) within the same project as the finetuned model. The
@@ -184,6 +183,7 @@ def sync(
             You can create a new API key associated with a service account and project
             [here](https://platform.openai.com/api-keys).
 
+        cbl_api_key (str): Circuit Breaker Labs API Key
         body (MultiTurnEvaluateOpenAiFinetuneRequest):
 
     Raises:
@@ -191,14 +191,14 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | MultiTurnRunTestsResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse
+        HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse
     """
 
     return sync_detailed(
         client=client,
         body=body,
-        cbl_api_key=cbl_api_key,
         openai_api_key=openai_api_key,
+        cbl_api_key=cbl_api_key,
     ).parsed
 
 
@@ -206,12 +206,12 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
     body: MultiTurnEvaluateOpenAiFinetuneRequest,
-    cbl_api_key: str,
     openai_api_key: str,
+    cbl_api_key: str,
 ) -> Response[
     HTTPValidationError
     | InternalServerErrorResponse
-    | MultiTurnRunTestsResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
     | UnauthorizedResponse
@@ -221,7 +221,6 @@ async def asyncio_detailed(
      Run multi-turn safety tests against an OpenAI fine-tuned model.
 
     Args:
-        cbl_api_key (str): Circuit Breaker Labs API Key
         openai_api_key (str):
             The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
             reference/project-service-accounts) within the same project as the finetuned model. The
@@ -230,6 +229,7 @@ async def asyncio_detailed(
             You can create a new API key associated with a service account and project
             [here](https://platform.openai.com/api-keys).
 
+        cbl_api_key (str): Circuit Breaker Labs API Key
         body (MultiTurnEvaluateOpenAiFinetuneRequest):
 
     Raises:
@@ -237,13 +237,13 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | MultiTurnRunTestsResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
         body=body,
-        cbl_api_key=cbl_api_key,
         openai_api_key=openai_api_key,
+        cbl_api_key=cbl_api_key,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -255,12 +255,12 @@ async def asyncio(
     *,
     client: AuthenticatedClient | Client,
     body: MultiTurnEvaluateOpenAiFinetuneRequest,
-    cbl_api_key: str,
     openai_api_key: str,
+    cbl_api_key: str,
 ) -> (
     HTTPValidationError
     | InternalServerErrorResponse
-    | MultiTurnRunTestsResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
     | UnauthorizedResponse
@@ -271,7 +271,6 @@ async def asyncio(
      Run multi-turn safety tests against an OpenAI fine-tuned model.
 
     Args:
-        cbl_api_key (str): Circuit Breaker Labs API Key
         openai_api_key (str):
             The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
             reference/project-service-accounts) within the same project as the finetuned model. The
@@ -280,6 +279,7 @@ async def asyncio(
             You can create a new API key associated with a service account and project
             [here](https://platform.openai.com/api-keys).
 
+        cbl_api_key (str): Circuit Breaker Labs API Key
         body (MultiTurnEvaluateOpenAiFinetuneRequest):
 
     Raises:
@@ -287,14 +287,14 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | MultiTurnRunTestsResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse
+        HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse
     """
 
     return (
         await asyncio_detailed(
             client=client,
             body=body,
-            cbl_api_key=cbl_api_key,
             openai_api_key=openai_api_key,
+            cbl_api_key=cbl_api_key,
         )
     ).parsed

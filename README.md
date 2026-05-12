@@ -67,6 +67,20 @@ from circuit_breaker_labs import Client
 client = Client(base_url="https://api.circuitbreakerlabs.ai/v1/")
 ```
 
+To see which test case groups your API key can use:
+
+```python
+import os
+
+from circuit_breaker_labs.api.test_case_groups import get_test_case_groups_get
+
+with client as client:
+    test_case_groups = get_test_case_groups_get.sync(
+        client=client,
+        cbl_api_key=os.environ["CBL_API_KEY"],
+    )
+```
+
 Now build a request and use it when calling an endpoint
 
 ```python
@@ -80,13 +94,14 @@ with client as client:
         threshold=0.5,
         variations=3,
         maximum_iteration_layers=2,
-        system_prompt=os.getenv("SYSTEM_PROMPT"),
+        test_case_groups=["suicidal_ideation"],
+        system_prompt=os.environ["SYSTEM_PROMPT"],
         openrouter_model_name="anthropic/claude-3.7-sonnet",
     )
 
-    run_tests_response = singleturn_evaluate_system_prompt_post.sync(
+    response = singleturn_evaluate_system_prompt_post.sync(
         client=client,
-        cbl_api_key=os.getenv("CBL_API_KEY"),
+        cbl_api_key=os.environ["CBL_API_KEY"],
         body=request,
     )
 ```
@@ -104,13 +119,14 @@ async with client as client:
         threshold=0.5,
         variations=3,
         maximum_iteration_layers=2,
-        system_prompt=os.getenv("SYSTEM_PROMPT"),
+        test_case_groups=["suicidal_ideation"],
+        system_prompt=os.environ["SYSTEM_PROMPT"],
         openrouter_model_name="anthropic/claude-3.7-sonnet",
     )
 
-    run_tests_response = await singleturn_evaluate_system_prompt_post.asyncio(
+    response = await singleturn_evaluate_system_prompt_post.asyncio(
         client=client,
-        cbl_api_key=os.getenv("CBL_API_KEY"),
+        cbl_api_key=os.environ["CBL_API_KEY"],
         body=request,
     )
 ```
@@ -121,28 +137,20 @@ Want to test multi-turn conversations instead? Use the multi-turn endpoint (asyn
 import os
 
 from circuit_breaker_labs.api.evaluations import multi_turn_evaluate_system_prompt_post
-from circuit_breaker_labs.models import (
-    MultiTurnEvaluateSystemPromptRequest,
-    MultiTurnTestType,
-    TestCaseGroup,
-)
+from circuit_breaker_labs.models import MultiTurnEvaluateSystemPromptRequest
 
 with client as client:
     request = MultiTurnEvaluateSystemPromptRequest(
         threshold=0.6,
         max_turns=6,
-        test_types=[
-            MultiTurnTestType.SEMANTIC_CHUNKS,
-            MultiTurnTestType.USER_PERSONA,
-        ],
-        system_prompt=os.getenv("SYSTEM_PROMPT"),
+        test_case_groups=["suicidal_ideation"],
+        system_prompt=os.environ["SYSTEM_PROMPT"],
         openrouter_model_name="anthropic/claude-3.7-sonnet",
-        test_case_groups=[TestCaseGroup.SUICIDAL_IDEATION],
     )
 
-    run_tests_response = multi_turn_evaluate_system_prompt_post.sync(
+    response = multi_turn_evaluate_system_prompt_post.sync(
         client=client,
-        cbl_api_key=os.getenv("CBL_API_KEY"),
+        cbl_api_key=os.environ["CBL_API_KEY"],
         body=request,
     )
 ```
