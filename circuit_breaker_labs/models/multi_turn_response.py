@@ -6,8 +6,11 @@ from typing import TYPE_CHECKING, Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..types import UNSET, Unset
+
 if TYPE_CHECKING:
     from ..models.failed_multi_turn_result import FailedMultiTurnResult
+    from ..models.multi_turn_evaluation_result import MultiTurnEvaluationResult
 
 
 T = TypeVar("T", bound="MultiTurnResponse")
@@ -21,11 +24,13 @@ class MultiTurnResponse:
         total_passed (int): Number of conversations that passed
         total_failed (int): Number of conversations that failed
         failed_results (list[FailedMultiTurnResult]): Details of each failed conversation
+        results (list[MultiTurnEvaluationResult] | Unset): All persisted multi-turn conversation results.
     """
 
     total_passed: int
     total_failed: int
     failed_results: list[FailedMultiTurnResult]
+    results: list[MultiTurnEvaluationResult] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -39,6 +44,13 @@ class MultiTurnResponse:
             failed_results_item = failed_results_item_data.to_dict()
             failed_results.append(failed_results_item)
 
+        results: list[dict[str, Any]] | Unset = UNSET
+        if not isinstance(self.results, Unset):
+            results = []
+            for results_item_data in self.results:
+                results_item = results_item_data.to_dict()
+                results.append(results_item)
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -48,12 +60,15 @@ class MultiTurnResponse:
                 "failed_results": failed_results,
             }
         )
+        if results is not UNSET:
+            field_dict["results"] = results
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.failed_multi_turn_result import FailedMultiTurnResult
+        from ..models.multi_turn_evaluation_result import MultiTurnEvaluationResult
 
         d = dict(src_dict)
         total_passed = d.pop("total_passed")
@@ -67,10 +82,20 @@ class MultiTurnResponse:
 
             failed_results.append(failed_results_item)
 
+        _results = d.pop("results", UNSET)
+        results: list[MultiTurnEvaluationResult] | Unset = UNSET
+        if _results is not UNSET:
+            results = []
+            for results_item_data in _results:
+                results_item = MultiTurnEvaluationResult.from_dict(results_item_data)
+
+                results.append(results_item)
+
         multi_turn_response = cls(
             total_passed=total_passed,
             total_failed=total_failed,
             failed_results=failed_results,
+            results=results,
         )
 
         multi_turn_response.additional_properties = d

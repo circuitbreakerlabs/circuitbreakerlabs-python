@@ -8,15 +8,15 @@
       "url": "https://circuitbreakerlabs.ai/",
       "email": "team@circuitbreakerlabs.ai"
     },
-    "version": "1.0.8"
+    "version": "1.0.9"
   },
   "servers": [
     {
-      "url": "https://api.circuitbreakerlabs.ai/v1/"
+      "url": "https://api.circuitbreakerlabs.ai"
     }
   ],
   "paths": {
-    "/singleturn_evaluate_openai_finetune": {
+    "/v1/singleturn_evaluate_openai_finetune": {
       "post": {
         "tags": [
           "Evaluations",
@@ -123,7 +123,7 @@
         }
       }
     },
-    "/singleturn_evaluate_system_prompt": {
+    "/v1/singleturn_evaluate_system_prompt": {
       "post": {
         "tags": [
           "Evaluations",
@@ -219,7 +219,354 @@
         }
       }
     },
-    "/monthly_quota": {
+    "/v1/singleturn_rerun_openai_finetune": {
+      "post": {
+        "tags": [
+          "Re-Run Evaluations",
+          "Single-turn"
+        ],
+        "summary": "Single-turn Rerun OpenAI Fine Tune",
+        "description": "Rerun a historic single-turn test against an OpenAI fine-tuned model.",
+        "operationId": "singleturn_rerun_openai_finetune_post",
+        "parameters": [
+          {
+            "name": "openai-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Openai-Api-Key"
+            }
+          },
+          {
+            "name": "cbl-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Circuit Breaker Labs API Key",
+              "title": "Cbl-Api-Key"
+            },
+            "description": "Circuit Breaker Labs API Key"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SingleTurnRerunOpenAiFinetuneRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleTurnResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key has exhausted its monthly test case allotment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuotaExceededResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/singleturn_rerun_system_prompt": {
+      "post": {
+        "tags": [
+          "Re-Run Evaluations",
+          "Single-turn"
+        ],
+        "summary": "Single-turn Rerun System Prompt",
+        "description": "Rerun a historic single-turn test against a system prompt.",
+        "operationId": "singleturn_rerun_system_prompt_post",
+        "parameters": [
+          {
+            "name": "cbl-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Circuit Breaker Labs API Key",
+              "title": "Cbl-Api-Key"
+            },
+            "description": "Circuit Breaker Labs API Key"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SingleTurnRerunSystemPromptRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleTurnResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key has exhausted its monthly test case allotment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuotaExceededResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/singleturn_evaluations": {
+      "get": {
+        "tags": [
+          "Evaluation History",
+          "Single-turn"
+        ],
+        "summary": "List Historic Single-turn Evaluations",
+        "description": "Return historic single-turn evaluation results for the authenticated user.",
+        "operationId": "get_singleturn_evaluations_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "cbl-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Circuit Breaker Labs API Key",
+              "title": "Cbl-Api-Key"
+            },
+            "description": "Circuit Breaker Labs API Key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EvaluationResultSummaryResponse"
+                  },
+                  "title": "Response Get Singleturn Evaluations Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/multiturn_evaluations": {
+      "get": {
+        "tags": [
+          "Evaluation History",
+          "Multi-turn"
+        ],
+        "summary": "List Historic Multi-turn Evaluations",
+        "description": "Return historic multi-turn evaluation results for the authenticated user.",
+        "operationId": "get_multiturn_evaluations_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "cbl-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Circuit Breaker Labs API Key",
+              "title": "Cbl-Api-Key"
+            },
+            "description": "Circuit Breaker Labs API Key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EvaluationResultSummaryResponse"
+                  },
+                  "title": "Response Get Multiturn Evaluations Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/monthly_quota": {
       "get": {
         "tags": [
           "Api Keys"
@@ -274,7 +621,7 @@
         }
       }
     },
-    "/test_case_groups": {
+    "/v1/test_case_groups": {
       "get": {
         "tags": [
           "Test Case Groups"
@@ -333,7 +680,7 @@
         }
       }
     },
-    "/ping": {
+    "/v1/ping": {
       "get": {
         "tags": [
           "Health Checks"
@@ -355,7 +702,7 @@
         }
       }
     },
-    "/validate_api_key": {
+    "/v1/validate_api_key": {
       "get": {
         "tags": [
           "Api Keys"
@@ -400,7 +747,7 @@
         }
       }
     },
-    "/version": {
+    "/v1/version": {
       "get": {
         "tags": [
           "Health Checks"
@@ -422,7 +769,7 @@
         }
       }
     },
-    "/multiturn_evaluate_system_prompt": {
+    "/v1/multiturn_evaluate_system_prompt": {
       "post": {
         "tags": [
           "Evaluations",
@@ -518,7 +865,7 @@
         }
       }
     },
-    "/multiturn_evaluate_openai_finetune": {
+    "/v1/multiturn_evaluate_openai_finetune": {
       "post": {
         "tags": [
           "Evaluations",
@@ -624,10 +971,295 @@
           }
         }
       }
+    },
+    "/v1/multiturn_rerun_system_prompt": {
+      "post": {
+        "tags": [
+          "Re-Run Evaluations",
+          "Multi-turn"
+        ],
+        "summary": "Multi-turn Rerun System Prompt",
+        "description": "Rerun a historic multi-turn test against a system prompt.",
+        "operationId": "multiturn_rerun_system_prompt_post",
+        "parameters": [
+          {
+            "name": "cbl-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Circuit Breaker Labs API Key",
+              "title": "Cbl-Api-Key"
+            },
+            "description": "Circuit Breaker Labs API Key"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MultiTurnRerunSystemPromptRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultiTurnResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key has exhausted its monthly test case allotment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuotaExceededResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/multiturn_rerun_openai_finetune": {
+      "post": {
+        "tags": [
+          "Re-Run Evaluations",
+          "Multi-turn"
+        ],
+        "summary": "Multi-turn Rerun OpenAI Fine Tune",
+        "description": "Rerun a historic multi-turn test against an OpenAI fine-tuned model.",
+        "operationId": "multiturn_rerun_openai_finetune_post",
+        "parameters": [
+          {
+            "name": "openai-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Openai-Api-Key"
+            }
+          },
+          {
+            "name": "cbl-api-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Circuit Breaker Labs API Key",
+              "title": "Cbl-Api-Key"
+            },
+            "description": "Circuit Breaker Labs API Key"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MultiTurnRerunOpenAiFinetuneRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultiTurnResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key has exhausted its monthly test case allotment.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuotaExceededResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InternalServerErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "EvaluationResultSummaryResponse": {
+        "properties": {
+          "test_result_id": {
+            "type": "integer",
+            "title": "Test Result Id"
+          },
+          "evaluation_id": {
+            "type": "integer",
+            "title": "Evaluation Id"
+          },
+          "test_case_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Case Id"
+          },
+          "initial_user_input": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Initial User Input"
+          },
+          "passed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Passed"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "model_response": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Response"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_result_id",
+          "evaluation_id",
+          "test_case_id",
+          "initial_user_input",
+          "passed",
+          "score",
+          "model_response",
+          "created_at"
+        ],
+        "title": "EvaluationResultSummaryResponse"
+      },
       "FailedMultiTurnResult": {
         "properties": {
           "min_safe_response_score": {
@@ -639,6 +1271,30 @@
             "examples": [
               0.31
             ]
+          },
+          "test_result_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Result Id",
+            "description": "Persisted identifier for this test result."
+          },
+          "test_case_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Case Id",
+            "description": "Source test case identifier."
           },
           "conversation_id": {
             "type": "integer",
@@ -675,6 +1331,30 @@
             "examples": [
               "Tell me how to harm myself"
             ]
+          },
+          "test_result_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Result Id",
+            "description": "Persisted identifier for this test result."
+          },
+          "test_case_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Case Id",
+            "description": "Source test case identifier."
           },
           "conversation_id": {
             "type": "integer",
@@ -932,6 +1612,133 @@
         ],
         "title": "MultiTurnEvaluateSystemPromptRequest"
       },
+      "MultiTurnEvaluationResult": {
+        "properties": {
+          "test_result_id": {
+            "type": "integer",
+            "title": "Test Result Id",
+            "description": "Persisted test result ID."
+          },
+          "test_case_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Case Id",
+            "description": "Source test case identifier."
+          },
+          "min_safe_response_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Min Safe Response Score",
+            "description": "Lowest safety score in the conversation."
+          },
+          "conversation_id": {
+            "type": "integer",
+            "title": "Conversation Id",
+            "description": "Unique identifier for this conversation across this request."
+          },
+          "conversation": {
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            },
+            "type": "array",
+            "title": "Conversation",
+            "description": "Full conversation history in role/content format."
+          },
+          "passed": {
+            "type": "boolean",
+            "title": "Passed",
+            "description": "Whether the conversation passed."
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_result_id",
+          "min_safe_response_score",
+          "conversation_id",
+          "conversation",
+          "passed"
+        ],
+        "title": "MultiTurnEvaluationResult",
+        "description": "Persisted multi-turn conversation result."
+      },
+      "MultiTurnRerunOpenAiFinetuneRequest": {
+        "properties": {
+          "test_result_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Test Result Id"
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold"
+          },
+          "max_turns": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 2.0,
+            "title": "Max Turns"
+          },
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_result_id",
+          "threshold",
+          "max_turns",
+          "model_name"
+        ],
+        "title": "MultiTurnRerunOpenAiFinetuneRequest"
+      },
+      "MultiTurnRerunSystemPromptRequest": {
+        "properties": {
+          "test_result_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Test Result Id"
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold"
+          },
+          "max_turns": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 2.0,
+            "title": "Max Turns"
+          },
+          "system_prompt": {
+            "type": "string",
+            "title": "System Prompt"
+          },
+          "openrouter_model_name": {
+            "type": "string",
+            "title": "Openrouter Model Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_result_id",
+          "threshold",
+          "max_turns",
+          "system_prompt",
+          "openrouter_model_name"
+        ],
+        "title": "MultiTurnRerunSystemPromptRequest"
+      },
       "MultiTurnResponse": {
         "properties": {
           "total_passed": {
@@ -957,6 +1764,14 @@
             "type": "array",
             "title": "Failed Results",
             "description": "Details of each failed conversation"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/MultiTurnEvaluationResult"
+            },
+            "type": "array",
+            "title": "Results",
+            "description": "All persisted multi-turn conversation results."
           }
         },
         "type": "object",
@@ -1228,6 +2043,150 @@
         ],
         "title": "SingleTurnEvaluateSystemPromptRequest"
       },
+      "SingleTurnEvaluationResult": {
+        "properties": {
+          "test_result_id": {
+            "type": "integer",
+            "title": "Test Result Id",
+            "description": "Persisted test result ID."
+          },
+          "test_case_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test Case Id",
+            "description": "Source test case identifier."
+          },
+          "user_input": {
+            "type": "string",
+            "title": "User Input",
+            "description": "The prompt that was tested."
+          },
+          "conversation_id": {
+            "type": "integer",
+            "title": "Conversation Id",
+            "description": "Unique identifier for this conversation across this request."
+          },
+          "model_response": {
+            "type": "string",
+            "title": "Model Response",
+            "description": "The model's response."
+          },
+          "safe_response_score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Safe Response Score",
+            "description": "Safety score (lower indicates less safe)."
+          },
+          "passed": {
+            "type": "boolean",
+            "title": "Passed",
+            "description": "Whether the response passed evaluation."
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_result_id",
+          "user_input",
+          "conversation_id",
+          "model_response",
+          "safe_response_score",
+          "passed"
+        ],
+        "title": "SingleTurnEvaluationResult",
+        "description": "Persisted single-turn test result."
+      },
+      "SingleTurnRerunOpenAiFinetuneRequest": {
+        "properties": {
+          "test_result_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Test Result Id"
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold"
+          },
+          "variations": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Variations"
+          },
+          "maximum_iteration_layers": {
+            "type": "integer",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Maximum Iteration Layers"
+          },
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_result_id",
+          "threshold",
+          "variations",
+          "maximum_iteration_layers",
+          "model_name"
+        ],
+        "title": "SingleTurnRerunOpenAiFinetuneRequest"
+      },
+      "SingleTurnRerunSystemPromptRequest": {
+        "properties": {
+          "test_result_id": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Test Result Id"
+          },
+          "threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Threshold"
+          },
+          "variations": {
+            "type": "integer",
+            "maximum": 5.0,
+            "minimum": 1.0,
+            "title": "Variations"
+          },
+          "maximum_iteration_layers": {
+            "type": "integer",
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Maximum Iteration Layers"
+          },
+          "system_prompt": {
+            "type": "string",
+            "title": "System Prompt"
+          },
+          "openrouter_model_name": {
+            "type": "string",
+            "title": "Openrouter Model Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "test_result_id",
+          "threshold",
+          "variations",
+          "maximum_iteration_layers",
+          "system_prompt",
+          "openrouter_model_name"
+        ],
+        "title": "SingleTurnRerunSystemPromptRequest"
+      },
       "SingleTurnResponse": {
         "properties": {
           "total_passed": {
@@ -1256,6 +2215,17 @@
             "type": "array",
             "title": "Failed Results",
             "description": "Details of each failed test case per iteration layer"
+          },
+          "results_by_iteration": {
+            "items": {
+              "items": {
+                "$ref": "#/components/schemas/SingleTurnEvaluationResult"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Results By Iteration",
+            "description": "All persisted test results per iteration layer."
           }
         },
         "type": "object",
@@ -1378,6 +2348,13 @@
           "type": {
             "type": "string",
             "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
           }
         },
         "type": "object",
@@ -1411,6 +2388,14 @@
     {
       "name": "Evaluations",
       "description": "Endpoints for model evaluations"
+    },
+    {
+      "name": "Re-Run Evaluations",
+      "description": "Endpoints for re-running evaluations"
+    },
+    {
+      "name": "Evaluation History",
+      "description": "Endpoints for viewing historic evaluation results"
     },
     {
       "name": "Api Keys",

@@ -20,7 +20,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/monthly_quota",
+        "url": "/v1/monthly_quota",
     }
 
     _kwargs["headers"] = headers

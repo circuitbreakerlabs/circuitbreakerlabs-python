@@ -9,7 +9,7 @@ from ...models.http_validation_error import HTTPValidationError
 from ...models.internal_server_error_response import InternalServerErrorResponse
 from ...models.not_found_response import NotFoundResponse
 from ...models.quota_exceeded_response import QuotaExceededResponse
-from ...models.single_turn_evaluate_open_ai_finetune_request import SingleTurnEvaluateOpenAiFinetuneRequest
+from ...models.single_turn_rerun_open_ai_finetune_request import SingleTurnRerunOpenAiFinetuneRequest
 from ...models.single_turn_response import SingleTurnResponse
 from ...models.unauthorized_response import UnauthorizedResponse
 from ...types import Response
@@ -17,7 +17,7 @@ from ...types import Response
 
 def _get_kwargs(
     *,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: SingleTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> dict[str, Any]:
@@ -28,7 +28,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/v1/singleturn_evaluate_openai_finetune",
+        "url": "/v1/singleturn_rerun_openai_finetune",
     }
 
     _kwargs["json"] = body.to_dict()
@@ -107,7 +107,7 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: SingleTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> Response[
@@ -118,21 +118,14 @@ def sync_detailed(
     | SingleTurnResponse
     | UnauthorizedResponse
 ]:
-    """Single-turn Evaluate OpenAI Fine Tune
+    """Single-turn Rerun OpenAI Fine Tune
 
-     Run single-turn safety tests against an OpenAI fine-tuned model.
+     Rerun a historic single-turn test against an OpenAI fine-tuned model.
 
     Args:
         openai_api_key (str):
-            The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
-            reference/project-service-accounts) within the same project as the finetuned model. The
-            API key should minimally have 'Request' permissions for 'Model Capabilities'.
-
-            You can create a new API key associated with a service account and project
-            [here](https://platform.openai.com/api-keys).
-
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (SingleTurnEvaluateOpenAiFinetuneRequest):
+        body (SingleTurnRerunOpenAiFinetuneRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -158,7 +151,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient | Client,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: SingleTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> (
@@ -170,21 +163,14 @@ def sync(
     | UnauthorizedResponse
     | None
 ):
-    """Single-turn Evaluate OpenAI Fine Tune
+    """Single-turn Rerun OpenAI Fine Tune
 
-     Run single-turn safety tests against an OpenAI fine-tuned model.
+     Rerun a historic single-turn test against an OpenAI fine-tuned model.
 
     Args:
         openai_api_key (str):
-            The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
-            reference/project-service-accounts) within the same project as the finetuned model. The
-            API key should minimally have 'Request' permissions for 'Model Capabilities'.
-
-            You can create a new API key associated with a service account and project
-            [here](https://platform.openai.com/api-keys).
-
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (SingleTurnEvaluateOpenAiFinetuneRequest):
+        body (SingleTurnRerunOpenAiFinetuneRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -205,7 +191,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: SingleTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> Response[
@@ -216,21 +202,14 @@ async def asyncio_detailed(
     | SingleTurnResponse
     | UnauthorizedResponse
 ]:
-    """Single-turn Evaluate OpenAI Fine Tune
+    """Single-turn Rerun OpenAI Fine Tune
 
-     Run single-turn safety tests against an OpenAI fine-tuned model.
+     Rerun a historic single-turn test against an OpenAI fine-tuned model.
 
     Args:
         openai_api_key (str):
-            The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
-            reference/project-service-accounts) within the same project as the finetuned model. The
-            API key should minimally have 'Request' permissions for 'Model Capabilities'.
-
-            You can create a new API key associated with a service account and project
-            [here](https://platform.openai.com/api-keys).
-
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (SingleTurnEvaluateOpenAiFinetuneRequest):
+        body (SingleTurnRerunOpenAiFinetuneRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -254,7 +233,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient | Client,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: SingleTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> (
@@ -266,21 +245,14 @@ async def asyncio(
     | UnauthorizedResponse
     | None
 ):
-    """Single-turn Evaluate OpenAI Fine Tune
+    """Single-turn Rerun OpenAI Fine Tune
 
-     Run single-turn safety tests against an OpenAI fine-tuned model.
+     Rerun a historic single-turn test against an OpenAI fine-tuned model.
 
     Args:
         openai_api_key (str):
-            The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
-            reference/project-service-accounts) within the same project as the finetuned model. The
-            API key should minimally have 'Request' permissions for 'Model Capabilities'.
-
-            You can create a new API key associated with a service account and project
-            [here](https://platform.openai.com/api-keys).
-
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (SingleTurnEvaluateOpenAiFinetuneRequest):
+        body (SingleTurnRerunOpenAiFinetuneRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

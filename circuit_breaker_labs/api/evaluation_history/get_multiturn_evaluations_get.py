@@ -5,22 +5,32 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
+from ...models.evaluation_result_summary_response import EvaluationResultSummaryResponse
 from ...models.http_validation_error import HTTPValidationError
-from ...models.test_case_group_response import TestCaseGroupResponse
-from ...models.unauthorized_response import UnauthorizedResponse
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
+    limit: int | Unset = 50,
+    offset: int | Unset = 0,
     cbl_api_key: str,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     headers["cbl-api-key"] = cbl_api_key
 
+    params: dict[str, Any] = {}
+
+    params["limit"] = limit
+
+    params["offset"] = offset
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/v1/test_case_groups",
+        "url": "/v1/multiturn_evaluations",
+        "params": params,
     }
 
     _kwargs["headers"] = headers
@@ -29,21 +39,16 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse] | None:
+) -> HTTPValidationError | list[EvaluationResultSummaryResponse] | None:
     if response.status_code == 200:
         response_200 = []
         _response_200 = response.json()
         for response_200_item_data in _response_200:
-            response_200_item = TestCaseGroupResponse.from_dict(response_200_item_data)
+            response_200_item = EvaluationResultSummaryResponse.from_dict(response_200_item_data)
 
             response_200.append(response_200_item)
 
         return response_200
-
-    if response.status_code == 401:
-        response_401 = UnauthorizedResponse.from_dict(response.json())
-
-        return response_401
 
     if response.status_code == 422:
         response_422 = HTTPValidationError.from_dict(response.json())
@@ -58,7 +63,7 @@ def _parse_response(
 
 def _build_response(
     *, client: AuthenticatedClient | Client, response: httpx.Response
-) -> Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]:
+) -> Response[HTTPValidationError | list[EvaluationResultSummaryResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -70,13 +75,17 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
+    limit: int | Unset = 50,
+    offset: int | Unset = 0,
     cbl_api_key: str,
-) -> Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]:
-    """Get Test Case Groups
+) -> Response[HTTPValidationError | list[EvaluationResultSummaryResponse]]:
+    """List Historic Multi-turn Evaluations
 
-     List the test case groups accessible to the current API key's user.
+     Return historic multi-turn evaluation results for the authenticated user.
 
     Args:
+        limit (int | Unset):  Default: 50.
+        offset (int | Unset):  Default: 0.
         cbl_api_key (str): Circuit Breaker Labs API Key
 
     Raises:
@@ -84,10 +93,12 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]
+        Response[HTTPValidationError | list[EvaluationResultSummaryResponse]]
     """
 
     kwargs = _get_kwargs(
+        limit=limit,
+        offset=offset,
         cbl_api_key=cbl_api_key,
     )
 
@@ -101,13 +112,17 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient | Client,
+    limit: int | Unset = 50,
+    offset: int | Unset = 0,
     cbl_api_key: str,
-) -> HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse] | None:
-    """Get Test Case Groups
+) -> HTTPValidationError | list[EvaluationResultSummaryResponse] | None:
+    """List Historic Multi-turn Evaluations
 
-     List the test case groups accessible to the current API key's user.
+     Return historic multi-turn evaluation results for the authenticated user.
 
     Args:
+        limit (int | Unset):  Default: 50.
+        offset (int | Unset):  Default: 0.
         cbl_api_key (str): Circuit Breaker Labs API Key
 
     Raises:
@@ -115,11 +130,13 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]
+        HTTPValidationError | list[EvaluationResultSummaryResponse]
     """
 
     return sync_detailed(
         client=client,
+        limit=limit,
+        offset=offset,
         cbl_api_key=cbl_api_key,
     ).parsed
 
@@ -127,13 +144,17 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
+    limit: int | Unset = 50,
+    offset: int | Unset = 0,
     cbl_api_key: str,
-) -> Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]:
-    """Get Test Case Groups
+) -> Response[HTTPValidationError | list[EvaluationResultSummaryResponse]]:
+    """List Historic Multi-turn Evaluations
 
-     List the test case groups accessible to the current API key's user.
+     Return historic multi-turn evaluation results for the authenticated user.
 
     Args:
+        limit (int | Unset):  Default: 50.
+        offset (int | Unset):  Default: 0.
         cbl_api_key (str): Circuit Breaker Labs API Key
 
     Raises:
@@ -141,10 +162,12 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]]
+        Response[HTTPValidationError | list[EvaluationResultSummaryResponse]]
     """
 
     kwargs = _get_kwargs(
+        limit=limit,
+        offset=offset,
         cbl_api_key=cbl_api_key,
     )
 
@@ -156,13 +179,17 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient | Client,
+    limit: int | Unset = 50,
+    offset: int | Unset = 0,
     cbl_api_key: str,
-) -> HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse] | None:
-    """Get Test Case Groups
+) -> HTTPValidationError | list[EvaluationResultSummaryResponse] | None:
+    """List Historic Multi-turn Evaluations
 
-     List the test case groups accessible to the current API key's user.
+     Return historic multi-turn evaluation results for the authenticated user.
 
     Args:
+        limit (int | Unset):  Default: 50.
+        offset (int | Unset):  Default: 0.
         cbl_api_key (str): Circuit Breaker Labs API Key
 
     Raises:
@@ -170,12 +197,14 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | UnauthorizedResponse | list[TestCaseGroupResponse]
+        HTTPValidationError | list[EvaluationResultSummaryResponse]
     """
 
     return (
         await asyncio_detailed(
             client=client,
+            limit=limit,
+            offset=offset,
             cbl_api_key=cbl_api_key,
         )
     ).parsed

@@ -7,17 +7,17 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.internal_server_error_response import InternalServerErrorResponse
+from ...models.multi_turn_rerun_open_ai_finetune_request import MultiTurnRerunOpenAiFinetuneRequest
+from ...models.multi_turn_response import MultiTurnResponse
 from ...models.not_found_response import NotFoundResponse
 from ...models.quota_exceeded_response import QuotaExceededResponse
-from ...models.single_turn_evaluate_open_ai_finetune_request import SingleTurnEvaluateOpenAiFinetuneRequest
-from ...models.single_turn_response import SingleTurnResponse
 from ...models.unauthorized_response import UnauthorizedResponse
 from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: MultiTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> dict[str, Any]:
@@ -28,7 +28,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/v1/singleturn_evaluate_openai_finetune",
+        "url": "/v1/multiturn_rerun_openai_finetune",
     }
 
     _kwargs["json"] = body.to_dict()
@@ -44,14 +44,14 @@ def _parse_response(
 ) -> (
     HTTPValidationError
     | InternalServerErrorResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnResponse
     | UnauthorizedResponse
     | None
 ):
     if response.status_code == 200:
-        response_200 = SingleTurnResponse.from_dict(response.json())
+        response_200 = MultiTurnResponse.from_dict(response.json())
 
         return response_200
 
@@ -91,9 +91,9 @@ def _build_response(
 ) -> Response[
     HTTPValidationError
     | InternalServerErrorResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnResponse
     | UnauthorizedResponse
 ]:
     return Response(
@@ -107,39 +107,32 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient | Client,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: MultiTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> Response[
     HTTPValidationError
     | InternalServerErrorResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnResponse
     | UnauthorizedResponse
 ]:
-    """Single-turn Evaluate OpenAI Fine Tune
+    """Multi-turn Rerun OpenAI Fine Tune
 
-     Run single-turn safety tests against an OpenAI fine-tuned model.
+     Rerun a historic multi-turn test against an OpenAI fine-tuned model.
 
     Args:
         openai_api_key (str):
-            The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
-            reference/project-service-accounts) within the same project as the finetuned model. The
-            API key should minimally have 'Request' permissions for 'Model Capabilities'.
-
-            You can create a new API key associated with a service account and project
-            [here](https://platform.openai.com/api-keys).
-
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (SingleTurnEvaluateOpenAiFinetuneRequest):
+        body (MultiTurnRerunOpenAiFinetuneRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -158,40 +151,33 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient | Client,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: MultiTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> (
     HTTPValidationError
     | InternalServerErrorResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnResponse
     | UnauthorizedResponse
     | None
 ):
-    """Single-turn Evaluate OpenAI Fine Tune
+    """Multi-turn Rerun OpenAI Fine Tune
 
-     Run single-turn safety tests against an OpenAI fine-tuned model.
+     Rerun a historic multi-turn test against an OpenAI fine-tuned model.
 
     Args:
         openai_api_key (str):
-            The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
-            reference/project-service-accounts) within the same project as the finetuned model. The
-            API key should minimally have 'Request' permissions for 'Model Capabilities'.
-
-            You can create a new API key associated with a service account and project
-            [here](https://platform.openai.com/api-keys).
-
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (SingleTurnEvaluateOpenAiFinetuneRequest):
+        body (MultiTurnRerunOpenAiFinetuneRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnResponse | UnauthorizedResponse
+        HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse
     """
 
     return sync_detailed(
@@ -205,39 +191,32 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient | Client,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: MultiTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> Response[
     HTTPValidationError
     | InternalServerErrorResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnResponse
     | UnauthorizedResponse
 ]:
-    """Single-turn Evaluate OpenAI Fine Tune
+    """Multi-turn Rerun OpenAI Fine Tune
 
-     Run single-turn safety tests against an OpenAI fine-tuned model.
+     Rerun a historic multi-turn test against an OpenAI fine-tuned model.
 
     Args:
         openai_api_key (str):
-            The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
-            reference/project-service-accounts) within the same project as the finetuned model. The
-            API key should minimally have 'Request' permissions for 'Model Capabilities'.
-
-            You can create a new API key associated with a service account and project
-            [here](https://platform.openai.com/api-keys).
-
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (SingleTurnEvaluateOpenAiFinetuneRequest):
+        body (MultiTurnRerunOpenAiFinetuneRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnResponse | UnauthorizedResponse]
+        Response[HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse]
     """
 
     kwargs = _get_kwargs(
@@ -254,40 +233,33 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient | Client,
-    body: SingleTurnEvaluateOpenAiFinetuneRequest,
+    body: MultiTurnRerunOpenAiFinetuneRequest,
     openai_api_key: str,
     cbl_api_key: str,
 ) -> (
     HTTPValidationError
     | InternalServerErrorResponse
+    | MultiTurnResponse
     | NotFoundResponse
     | QuotaExceededResponse
-    | SingleTurnResponse
     | UnauthorizedResponse
     | None
 ):
-    """Single-turn Evaluate OpenAI Fine Tune
+    """Multi-turn Rerun OpenAI Fine Tune
 
-     Run single-turn safety tests against an OpenAI fine-tuned model.
+     Rerun a historic multi-turn test against an OpenAI fine-tuned model.
 
     Args:
         openai_api_key (str):
-            The OpenAI API Key owned by a [service account](https://platform.openai.com/docs/api-
-            reference/project-service-accounts) within the same project as the finetuned model. The
-            API key should minimally have 'Request' permissions for 'Model Capabilities'.
-
-            You can create a new API key associated with a service account and project
-            [here](https://platform.openai.com/api-keys).
-
         cbl_api_key (str): Circuit Breaker Labs API Key
-        body (SingleTurnEvaluateOpenAiFinetuneRequest):
+        body (MultiTurnRerunOpenAiFinetuneRequest):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError | InternalServerErrorResponse | NotFoundResponse | QuotaExceededResponse | SingleTurnResponse | UnauthorizedResponse
+        HTTPValidationError | InternalServerErrorResponse | MultiTurnResponse | NotFoundResponse | QuotaExceededResponse | UnauthorizedResponse
     """
 
     return (
