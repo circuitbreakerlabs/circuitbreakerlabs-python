@@ -12,29 +12,33 @@ if TYPE_CHECKING:
     from ..models.message import Message
 
 
-T = TypeVar("T", bound="FailedMultiTurnResult")
+T = TypeVar("T", bound="MultiTurnEvaluationResult")
 
 
 @_attrs_define
-class FailedMultiTurnResult:
-    """Details of a failed multi-turn conversation.
+class MultiTurnEvaluationResult:
+    """Persisted multi-turn conversation result.
 
     Attributes:
-        min_safe_response_score (float): Lowest safety score in the conversation
-        conversation_id (int): Unique identifier for this conversation across this request
-        conversation (list[Message]): Full conversation history in role/content format
-        test_result_id (int | None | Unset): Persisted identifier for this test result.
+        test_result_id (int): Persisted test result ID.
+        min_safe_response_score (float): Lowest safety score in the conversation.
+        conversation_id (int): Unique identifier for this conversation across this request.
+        conversation (list[Message]): Full conversation history in role/content format.
+        passed (bool): Whether the conversation passed.
         test_case_id (int | None | Unset): Source test case identifier.
     """
 
+    test_result_id: int
     min_safe_response_score: float
     conversation_id: int
     conversation: list[Message]
-    test_result_id: int | None | Unset = UNSET
+    passed: bool
     test_case_id: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+
+        test_result_id = self.test_result_id
 
         min_safe_response_score = self.min_safe_response_score
 
@@ -45,11 +49,7 @@ class FailedMultiTurnResult:
             conversation_item = conversation_item_data.to_dict()
             conversation.append(conversation_item)
 
-        test_result_id: int | None | Unset
-        if isinstance(self.test_result_id, Unset):
-            test_result_id = UNSET
-        else:
-            test_result_id = self.test_result_id
+        passed = self.passed
 
         test_case_id: int | None | Unset
         if isinstance(self.test_case_id, Unset):
@@ -61,13 +61,13 @@ class FailedMultiTurnResult:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "test_result_id": test_result_id,
                 "min_safe_response_score": min_safe_response_score,
                 "conversation_id": conversation_id,
                 "conversation": conversation,
+                "passed": passed,
             }
         )
-        if test_result_id is not UNSET:
-            field_dict["test_result_id"] = test_result_id
         if test_case_id is not UNSET:
             field_dict["test_case_id"] = test_case_id
 
@@ -78,6 +78,8 @@ class FailedMultiTurnResult:
         from ..models.message import Message
 
         d = dict(src_dict)
+        test_result_id = d.pop("test_result_id")
+
         min_safe_response_score = d.pop("min_safe_response_score")
 
         conversation_id = d.pop("conversation_id")
@@ -89,14 +91,7 @@ class FailedMultiTurnResult:
 
             conversation.append(conversation_item)
 
-        def _parse_test_result_id(data: object) -> int | None | Unset:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(int | None | Unset, data)
-
-        test_result_id = _parse_test_result_id(d.pop("test_result_id", UNSET))
+        passed = d.pop("passed")
 
         def _parse_test_case_id(data: object) -> int | None | Unset:
             if data is None:
@@ -107,16 +102,17 @@ class FailedMultiTurnResult:
 
         test_case_id = _parse_test_case_id(d.pop("test_case_id", UNSET))
 
-        failed_multi_turn_result = cls(
+        multi_turn_evaluation_result = cls(
+            test_result_id=test_result_id,
             min_safe_response_score=min_safe_response_score,
             conversation_id=conversation_id,
             conversation=conversation,
-            test_result_id=test_result_id,
+            passed=passed,
             test_case_id=test_case_id,
         )
 
-        failed_multi_turn_result.additional_properties = d
-        return failed_multi_turn_result
+        multi_turn_evaluation_result.additional_properties = d
+        return multi_turn_evaluation_result
 
     @property
     def additional_keys(self) -> list[str]:

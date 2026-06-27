@@ -19,7 +19,7 @@ def _get_kwargs(
 
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": "/validate_api_key",
+        "url": "/v1/validate_api_key",
     }
 
     _kwargs["headers"] = headers
