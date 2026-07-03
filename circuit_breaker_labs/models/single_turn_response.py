@@ -21,6 +21,7 @@ class SingleTurnResponse:
     """Payload for single_turn_response messages (Server -> Client).
 
     Attributes:
+        evaluation_id (int): Persisted evaluation run ID.
         total_passed (int): Number of test cases that passed
         total_failed (int): Number of test cases that failed
         failed_results (list[list[FailedSingleTurnResult]]): Details of each failed test case per iteration layer
@@ -28,6 +29,7 @@ class SingleTurnResponse:
             layer.
     """
 
+    evaluation_id: int
     total_passed: int
     total_failed: int
     failed_results: list[list[FailedSingleTurnResult]]
@@ -35,6 +37,8 @@ class SingleTurnResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+
+        evaluation_id = self.evaluation_id
 
         total_passed = self.total_passed
 
@@ -64,6 +68,7 @@ class SingleTurnResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "evaluation_id": evaluation_id,
                 "total_passed": total_passed,
                 "total_failed": total_failed,
                 "failed_results": failed_results,
@@ -80,6 +85,8 @@ class SingleTurnResponse:
         from ..models.single_turn_evaluation_result import SingleTurnEvaluationResult
 
         d = dict(src_dict)
+        evaluation_id = d.pop("evaluation_id")
+
         total_passed = d.pop("total_passed")
 
         total_failed = d.pop("total_failed")
@@ -113,6 +120,7 @@ class SingleTurnResponse:
                 results_by_iteration.append(results_by_iteration_item)
 
         single_turn_response = cls(
+            evaluation_id=evaluation_id,
             total_passed=total_passed,
             total_failed=total_failed,
             failed_results=failed_results,
