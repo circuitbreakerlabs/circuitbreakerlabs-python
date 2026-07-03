@@ -21,12 +21,14 @@ class MultiTurnResponse:
     """Payload for multi_turn_response messages (Server -> Client).
 
     Attributes:
+        evaluation_id (int): Persisted evaluation run ID.
         total_passed (int): Number of conversations that passed
         total_failed (int): Number of conversations that failed
         failed_results (list[FailedMultiTurnResult]): Details of each failed conversation
         results (list[MultiTurnEvaluationResult] | Unset): All persisted multi-turn conversation results.
     """
 
+    evaluation_id: int
     total_passed: int
     total_failed: int
     failed_results: list[FailedMultiTurnResult]
@@ -34,6 +36,8 @@ class MultiTurnResponse:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+
+        evaluation_id = self.evaluation_id
 
         total_passed = self.total_passed
 
@@ -55,6 +59,7 @@ class MultiTurnResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "evaluation_id": evaluation_id,
                 "total_passed": total_passed,
                 "total_failed": total_failed,
                 "failed_results": failed_results,
@@ -71,6 +76,8 @@ class MultiTurnResponse:
         from ..models.multi_turn_evaluation_result import MultiTurnEvaluationResult
 
         d = dict(src_dict)
+        evaluation_id = d.pop("evaluation_id")
+
         total_passed = d.pop("total_passed")
 
         total_failed = d.pop("total_failed")
@@ -92,6 +99,7 @@ class MultiTurnResponse:
                 results.append(results_item)
 
         multi_turn_response = cls(
+            evaluation_id=evaluation_id,
             total_passed=total_passed,
             total_failed=total_failed,
             failed_results=failed_results,
