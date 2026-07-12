@@ -17,6 +17,7 @@ class SingleTurnEvaluationResult:
 
     Attributes:
         test_result_id (int): Persisted test result ID.
+        iteration (int): Zero-based evaluation iteration that produced this result.
         user_input (str): The prompt that was tested.
         conversation_id (int): Unique identifier for this conversation across this request.
         model_response (str): The model's response.
@@ -26,6 +27,7 @@ class SingleTurnEvaluationResult:
     """
 
     test_result_id: int
+    iteration: int
     user_input: str
     conversation_id: int
     model_response: str
@@ -36,6 +38,8 @@ class SingleTurnEvaluationResult:
 
     def to_dict(self) -> dict[str, Any]:
         test_result_id = self.test_result_id
+
+        iteration = self.iteration
 
         user_input = self.user_input
 
@@ -58,6 +62,7 @@ class SingleTurnEvaluationResult:
         field_dict.update(
             {
                 "test_result_id": test_result_id,
+                "iteration": iteration,
                 "user_input": user_input,
                 "conversation_id": conversation_id,
                 "model_response": model_response,
@@ -74,6 +79,8 @@ class SingleTurnEvaluationResult:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
         test_result_id = d.pop("test_result_id")
+
+        iteration = d.pop("iteration")
 
         user_input = d.pop("user_input")
 
@@ -96,6 +103,7 @@ class SingleTurnEvaluationResult:
 
         single_turn_evaluation_result = cls(
             test_result_id=test_result_id,
+            iteration=iteration,
             user_input=user_input,
             conversation_id=conversation_id,
             model_response=model_response,

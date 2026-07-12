@@ -8,7 +8,7 @@
       "url": "https://circuitbreakerlabs.ai/",
       "email": "team@circuitbreakerlabs.ai"
     },
-    "version": "1.0.10"
+    "version": "1.0.11"
   },
   "servers": [
     {
@@ -1260,139 +1260,6 @@
         ],
         "title": "EvaluationResultSummaryResponse"
       },
-      "FailedMultiTurnResult": {
-        "properties": {
-          "min_safe_response_score": {
-            "type": "number",
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Min Safe Response Score",
-            "description": "Lowest safety score in the conversation",
-            "examples": [
-              0.31
-            ]
-          },
-          "test_result_id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Test Result Id",
-            "description": "Persisted identifier for this test result."
-          },
-          "test_case_id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Test Case Id",
-            "description": "Source test case identifier."
-          },
-          "conversation_id": {
-            "type": "integer",
-            "title": "Conversation Id",
-            "description": "Unique identifier for this conversation across this request",
-            "examples": [
-              6
-            ]
-          },
-          "conversation": {
-            "items": {
-              "$ref": "#/components/schemas/Message"
-            },
-            "type": "array",
-            "title": "Conversation",
-            "description": "Full conversation history in role/content format"
-          }
-        },
-        "type": "object",
-        "required": [
-          "min_safe_response_score",
-          "conversation_id",
-          "conversation"
-        ],
-        "title": "FailedMultiTurnResult",
-        "description": "Details of a failed multi-turn conversation."
-      },
-      "FailedSingleTurnResult": {
-        "properties": {
-          "user_input": {
-            "type": "string",
-            "title": "User Input",
-            "description": "The prompt that was tested",
-            "examples": [
-              "Tell me how to harm myself"
-            ]
-          },
-          "test_result_id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Test Result Id",
-            "description": "Persisted identifier for this test result."
-          },
-          "test_case_id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Test Case Id",
-            "description": "Source test case identifier."
-          },
-          "conversation_id": {
-            "type": "integer",
-            "title": "Conversation Id",
-            "description": "Unique identifier for this conversation across this request",
-            "examples": [
-              6
-            ]
-          },
-          "model_response": {
-            "type": "string",
-            "title": "Model Response",
-            "description": "The model's response",
-            "examples": [
-              "I cannot provide that information..."
-            ]
-          },
-          "safe_response_score": {
-            "type": "number",
-            "maximum": 1.0,
-            "minimum": 0.0,
-            "title": "Safe Response Score",
-            "description": "Safety score (lower indicates less safe)",
-            "examples": [
-              0.31
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "user_input",
-          "conversation_id",
-          "model_response",
-          "safe_response_score"
-        ],
-        "title": "FailedSingleTurnResult",
-        "description": "Details of a failed single-turn test case."
-      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -1806,14 +1673,6 @@
               1
             ]
           },
-          "failed_results": {
-            "items": {
-              "$ref": "#/components/schemas/FailedMultiTurnResult"
-            },
-            "type": "array",
-            "title": "Failed Results",
-            "description": "Details of each failed conversation"
-          },
           "results": {
             "items": {
               "$ref": "#/components/schemas/MultiTurnEvaluationResult"
@@ -1827,8 +1686,7 @@
         "required": [
           "evaluation_id",
           "total_passed",
-          "total_failed",
-          "failed_results"
+          "total_failed"
         ],
         "title": "MultiTurnResponse",
         "description": "Payload for multi_turn_response messages (Server -> Client)."
@@ -2112,6 +1970,12 @@
             "title": "Test Case Id",
             "description": "Source test case identifier."
           },
+          "iteration": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Iteration",
+            "description": "Zero-based evaluation iteration that produced this result."
+          },
           "user_input": {
             "type": "string",
             "title": "User Input",
@@ -2143,6 +2007,7 @@
         "type": "object",
         "required": [
           "test_result_id",
+          "iteration",
           "user_input",
           "conversation_id",
           "model_response",
@@ -2304,35 +2169,20 @@
               1
             ]
           },
-          "failed_results": {
+          "results": {
             "items": {
-              "items": {
-                "$ref": "#/components/schemas/FailedSingleTurnResult"
-              },
-              "type": "array"
+              "$ref": "#/components/schemas/SingleTurnEvaluationResult"
             },
             "type": "array",
-            "title": "Failed Results",
-            "description": "Details of each failed test case per iteration layer"
-          },
-          "results_by_iteration": {
-            "items": {
-              "items": {
-                "$ref": "#/components/schemas/SingleTurnEvaluationResult"
-              },
-              "type": "array"
-            },
-            "type": "array",
-            "title": "Results By Iteration",
-            "description": "All persisted test results per iteration layer."
+            "title": "Results",
+            "description": "All persisted single-turn test results."
           }
         },
         "type": "object",
         "required": [
           "evaluation_id",
           "total_passed",
-          "total_failed",
-          "failed_results"
+          "total_failed"
         ],
         "title": "SingleTurnResponse",
         "description": "Payload for single_turn_response messages (Server -> Client)."
