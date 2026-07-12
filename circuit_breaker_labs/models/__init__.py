@@ -1,8 +1,6 @@
 """Contains all the data models used in inputs/outputs"""
 
 from .evaluation_result_summary_response import EvaluationResultSummaryResponse
-from .failed_multi_turn_result import FailedMultiTurnResult
-from .failed_single_turn_result import FailedSingleTurnResult
 from .http_validation_error import HTTPValidationError
 from .internal_server_error import InternalServerError
 from .internal_server_error_response import InternalServerErrorResponse
@@ -36,8 +34,6 @@ from .version_response import VersionResponse
 
 __all__ = (
     "EvaluationResultSummaryResponse",
-    "FailedMultiTurnResult",
-    "FailedSingleTurnResult",
     "HTTPValidationError",
     "InternalServerError",
     "InternalServerErrorResponse",
