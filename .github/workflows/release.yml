@@ -72,7 +72,8 @@ jobs:
 
   publish:
     needs: release
-    if: needs.release.outputs.tag_created == 'true'
+    # PyPI publishing is intentionally disabled.
+    if: ${{ false && needs.release.outputs.tag_created == 'true' }}
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
